@@ -1,0 +1,32 @@
+# Backend (Maven/Java)
+carioca/target/
+*.class
+*.jar
+*.log
+hs_err_pid*
+
+# Frontend (Node/Vite)
+carioca-fe/node_modules/
+carioca-fe/dist/
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+
+# H2
+*.mv.db
+*.trace.db
+
+# Misc
+nul
+.claude/settings.local.json

@@ -1,0 +1,26 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(mvn spring-boot:run)",
+      "Bash(mvn test)",
+      "Bash(mvn clean package)",
+      "Bash(mvn clean install)",
+      "Bash(mvn compile)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run preview)",
+      "Bash(npm install)",
+      "Bash(git status)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": []
+  }
+}
