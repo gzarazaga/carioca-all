@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import * as api from '../services/api'
 import { useGameStore } from '../stores/gameStore'
+import type { FormacionInput } from '../types/game'
 
 export function useGameActions() {
   const partidaId = useGameStore((s) => s.partidaId)
@@ -63,14 +64,17 @@ export function useGameActions() {
   )
 
   const bajar = useCallback(
-    async (tipo: 'PIERNA' | 'ESCALERA', cartaIds: string[]) => {
+    async (formaciones: FormacionInput[]) => {
       if (!partidaId || !jugadorId) return
       useGameStore.getState().setLoading(true)
       try {
-        await api.bajarFormacion(partidaId, jugadorId, tipo, cartaIds)
+        await api.bajarFormacion(partidaId, jugadorId, formaciones)
         useGameStore.getState().clearSelection()
         useGameStore.getState().setShowFormationBuilder(false)
-        useGameStore.getState().addToast('Formacion bajada!', 'success')
+        useGameStore.getState().addToast(
+          `${formaciones.length === 1 ? 'Formacion bajada' : `${formaciones.length} formaciones bajadas`}!`,
+          'success',
+        )
         await refresh()
       } catch (e) {
         useGameStore.getState().addToast(

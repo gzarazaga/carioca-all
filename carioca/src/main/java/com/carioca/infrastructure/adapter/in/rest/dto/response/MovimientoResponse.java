@@ -3,6 +3,8 @@ package com.carioca.infrastructure.adapter.in.rest.dto.response;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Response para movimientos (robar, descartar, etc.).
  */
@@ -14,7 +16,7 @@ public class MovimientoResponse {
     private boolean exito;
     private String mensaje;
     private CartaResponse carta;
-    private FormacionResponse formacion;
+    private List<FormacionResponse> formaciones;
 
     @Data
     @Builder

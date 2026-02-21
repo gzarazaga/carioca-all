@@ -1,4 +1,4 @@
-import type { EstadoJuego, PartidaResponse, MovimientoResponse, Carta } from '../types/game'
+import type { EstadoJuego, PartidaResponse, MovimientoResponse, Carta, FormacionInput } from '../types/game'
 
 const BASE = '/api/partidas'
 
@@ -60,12 +60,11 @@ export function descartarCarta(partidaId: string, jugadorId: string, cartaId: st
 export function bajarFormacion(
   partidaId: string,
   jugadorId: string,
-  tipo: 'PIERNA' | 'ESCALERA',
-  cartaIds: string[],
+  formaciones: FormacionInput[],
 ): Promise<MovimientoResponse> {
   return request(`${BASE}/${partidaId}/juego/bajar`, {
     method: 'POST',
-    body: JSON.stringify({ jugadorId, tipo, cartaIds }),
+    body: JSON.stringify({ jugadorId, formaciones }),
   })
 }
 

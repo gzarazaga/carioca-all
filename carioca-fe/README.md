@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+# Carioca Card Game - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz web del juego de cartas Carioca, construida con **React 19** y **TypeScript**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Requisitos previos
 
-## React Compiler
+- **Node.js 18+** — verificar con `node -v`
+- **npm 9+** — verificar con `npm -v`
+- **Backend corriendo** en `http://localhost:8080` (ver [carioca/README.md](../carioca/README.md))
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Ejecución local
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 1. Instalar dependencias
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd carioca-fe
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Iniciar el servidor de desarrollo
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+La app queda disponible en `http://localhost:5173`.
+
+Las llamadas a `/api/*` se redirigen automáticamente al backend en `http://localhost:8080` (configurado en `vite.config.ts`), por lo que no es necesario configurar nada adicional para desarrollo local.
+
+---
+
+## Scripts disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `npm run dev` | Inicia el servidor de desarrollo con hot reload |
+| `npm run build` | Compila TypeScript y genera el build de producción en `dist/` |
+| `npm run preview` | Sirve el build de producción localmente para revisión |
+| `npm run lint` | Ejecuta ESLint sobre el código fuente |
+| `npm run test` | Ejecuta los tests en modo watch |
+| `npm run test:run` | Ejecuta los tests una sola vez |
+| `npm run test:ui` | Ejecuta los tests con interfaz gráfica de Vitest |
+
+---
+
+## Build de producción
+
+```bash
+npm run build
+```
+
+El build queda en el directorio `dist/`. Para previsualizarlo localmente:
+
+```bash
+npm run preview
+```
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── pages/          # HomePage, LobbyPage, GamePage, ResultsPage
+├── components/
+│   ├── card/       # Card, CardBack, CardHand
+│   ├── game/       # GameBoard, RoundInfo, TurnIndicator, DrawPile, DiscardPile,
+│   │               # FormationsArea, PlayerHand, OpponentRow
+│   ├── actions/    # ActionBar, FormationBuilder, PegarDialog
+│   ├── lobby/      # PlayerList, GameCode
+│   └── common/     # Toast, Scoreboard
+├── stores/         # gameStore.ts (Zustand)
+├── services/       # api.ts (REST), websocket.ts (WS)
+├── hooks/
+├── types/
+└── utils/
+```
+
+---
+
+## Tech Stack
+
+- **React 19** + **TypeScript 5.9**
+- **Vite 7** — build tool y dev server
+- **Tailwind CSS 4** — estilos
+- **Zustand 5** — manejo de estado global
+- **React Router DOM 7** — navegación
+- **Vitest** + **React Testing Library** — testing

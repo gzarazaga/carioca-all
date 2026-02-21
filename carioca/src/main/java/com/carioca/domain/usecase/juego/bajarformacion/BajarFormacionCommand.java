@@ -6,18 +6,23 @@ import lombok.Value;
 import java.util.List;
 
 /**
- * Comando para bajar una formación.
+ * Comando para bajar una o más formaciones en una sola jugada.
  */
 @Value
 public class BajarFormacionCommand {
 
     String partidaId;
     String jugadorId;
-    TipoFormacion tipo;
-    List<String> cartaIds;
+    List<FormacionInput> formaciones;
 
     public static BajarFormacionCommand of(String partidaId, String jugadorId,
-                                           TipoFormacion tipo, List<String> cartaIds) {
-        return new BajarFormacionCommand(partidaId, jugadorId, tipo, cartaIds);
+                                           List<FormacionInput> formaciones) {
+        return new BajarFormacionCommand(partidaId, jugadorId, formaciones);
+    }
+
+    @Value
+    public static class FormacionInput {
+        TipoFormacion tipo;
+        List<String> cartaIds;
     }
 }

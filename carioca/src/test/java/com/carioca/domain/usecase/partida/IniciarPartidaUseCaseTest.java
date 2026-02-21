@@ -88,7 +88,7 @@ class IniciarPartidaUseCaseTest {
 
         Partida partidaGuardada = partidaCaptor.getValue();
         for (Jugador jugador : partidaGuardada.getJugadores()) {
-            assertEquals(12, jugador.cantidadCartasEnMano());
+            assertEquals(7, jugador.cantidadCartasEnMano());
         }
     }
 

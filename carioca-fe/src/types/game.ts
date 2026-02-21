@@ -47,10 +47,15 @@ export interface PartidaResponse {
   mensaje: string
 }
 
+export interface FormacionInput {
+  tipo: 'PIERNA' | 'ESCALERA'
+  cartaIds: string[]
+}
+
 export interface MovimientoResponse {
   tipo: string
   exito: boolean
   mensaje: string
   carta?: Carta
-  formacion?: { id: string; tipo: string }
+  formaciones?: { id: string; tipo: string }[]
 }

@@ -22,7 +22,7 @@ public class PartidaPersistenceMapper {
 
     private final JugadorPersistenceMapper jugadorMapper;
     private final CartaPersistenceMapper cartaMapper;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     public PartidaEntity toEntity(Partida partida) {
         if (partida == null) {

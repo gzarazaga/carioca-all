@@ -127,13 +127,13 @@ class PartidaTest {
         }
 
         @Test
-        @DisplayName("debe repartir 12 cartas a cada jugador")
-        void debeRepartir12CartasACadaJugador() {
+        @DisplayName("debe repartir 7 cartas a cada jugador")
+        void debeRepartir7CartasACadaJugador() {
             partida.agregarJugador(Jugador.crear("Jugador 2"));
             partida.iniciar();
 
             for (Jugador jugador : partida.getJugadores()) {
-                assertEquals(12, jugador.cantidadCartasEnMano());
+                assertEquals(7, jugador.cantidadCartasEnMano());
             }
         }
 
@@ -193,7 +193,7 @@ class PartidaTest {
             Carta carta = partida.robarDelMazo(jugadorActualId);
 
             assertNotNull(carta);
-            assertEquals(13, partida.obtenerJugadorActual().cantidadCartasEnMano());
+            assertEquals(8, partida.obtenerJugadorActual().cantidadCartasEnMano());
             assertEquals(EstadoTurno.ESPERANDO_DESCARTAR, partida.getEstadoTurno());
         }
 
@@ -250,7 +250,7 @@ class PartidaTest {
 
             partida.descartarCarta(jugadorActual.getIdValue(), cartaId);
 
-            assertEquals(12, jugadorActual.cantidadCartasEnMano());
+            assertEquals(7, jugadorActual.cantidadCartasEnMano());
         }
 
         @Test

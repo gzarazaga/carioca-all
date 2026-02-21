@@ -9,8 +9,10 @@ import com.carioca.domain.usecase.juego.bajarformacion.BajarFormacionCommand;
 import com.carioca.domain.usecase.juego.bajarformacion.BajarFormacionUseCase;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 /**
- * Implementación del caso de uso para bajar formación.
+ * Implementación del caso de uso para bajar formaciones.
  */
 @RequiredArgsConstructor
 public class BajarFormacionUseCaseImpl implements BajarFormacionUseCase {
@@ -19,24 +21,25 @@ public class BajarFormacionUseCaseImpl implements BajarFormacionUseCase {
     private final NotificacionPort notificacionPort;
 
     @Override
-    public Formacion ejecutar(BajarFormacionCommand command) {
+    public List<Formacion> ejecutar(BajarFormacionCommand command) {
         Partida partida = partidaRepository.findById(command.getPartidaId())
                 .orElseThrow(() -> new PartidaNoEncontradaException(command.getPartidaId()));
 
-        Formacion formacion = partida.bajarFormacion(
+        List<Formacion> formaciones = partida.bajarFormacion(
                 command.getJugadorId(),
-                command.getTipo(),
-                command.getCartaIds()
+                command.getFormaciones()
         );
 
         partidaRepository.save(partida);
 
-        notificacionPort.notificarFormacionBajada(
-                command.getPartidaId(),
-                command.getJugadorId(),
-                formacion
-        );
+        for (Formacion formacion : formaciones) {
+            notificacionPort.notificarFormacionBajada(
+                    command.getPartidaId(),
+                    command.getJugadorId(),
+                    formacion
+            );
+        }
 
-        return formacion;
+        return formaciones;
     }
 }

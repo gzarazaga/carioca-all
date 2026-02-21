@@ -2,16 +2,18 @@ package com.carioca.domain.usecase.juego.bajarformacion;
 
 import com.carioca.domain.model.juego.Formacion;
 
+import java.util.List;
+
 /**
- * Caso de uso para bajar una formación de cartas.
+ * Caso de uso para bajar formaciones de cartas.
  */
 public interface BajarFormacionUseCase {
 
     /**
-     * Baja una formación (pierna o escalera) a la mesa.
+     * Baja una o más formaciones (piernas o escaleras) a la mesa en una sola jugada.
      *
      * @param command Datos del comando
-     * @return La formación creada
+     * @return Las formaciones creadas
      */
-    Formacion ejecutar(BajarFormacionCommand command);
+    List<Formacion> ejecutar(BajarFormacionCommand command);
 }

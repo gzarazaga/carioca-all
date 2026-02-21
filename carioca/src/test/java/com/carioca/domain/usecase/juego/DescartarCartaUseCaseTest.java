@@ -101,7 +101,7 @@ class DescartarCartaUseCaseTest {
             verify(partidaRepository).save(partidaCaptor.capture());
 
             // El jugador actual cambió, verificamos que la cantidad de cartas se redujo
-            assertEquals(12, partidaCaptor.getValue().getJugadores().get(0).cantidadCartasEnMano());
+            assertEquals(cartasAntes - 1, partidaCaptor.getValue().getJugadores().get(0).cantidadCartasEnMano());
         }
 
         @Test

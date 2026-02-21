@@ -13,9 +13,10 @@ import com.carioca.domain.usecase.juego.robarcarta.RobarCartaCommand;
 import com.carioca.domain.usecase.juego.robarcarta.RobarCartaUseCase;
 import com.carioca.infrastructure.adapter.in.rest.dto.request.*;
 import com.carioca.infrastructure.adapter.in.rest.dto.response.CartaResponse;
-import com.carioca.infrastructure.adapter.in.rest.dto.response.EstadoJuegoResponse;
 import com.carioca.infrastructure.adapter.in.rest.dto.response.MovimientoResponse;
 import com.carioca.infrastructure.adapter.in.rest.mapper.PartidaRestMapper;
+
+import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -92,34 +93,39 @@ public class JuegoRestController {
     }
 
     /**
-     * Baja una formación (pierna o escalera).
+     * Baja una o más formaciones (piernas o escaleras) en una sola jugada.
      */
     @PostMapping("/bajar")
     public ResponseEntity<MovimientoResponse> bajarFormacion(
             @PathVariable String partidaId,
             @Valid @RequestBody BajarFormacionRequest request) {
 
-        TipoFormacion tipo = TipoFormacion.valueOf(request.getTipo().toUpperCase());
+        List<BajarFormacionCommand.FormacionInput> inputs = request.getFormaciones().stream()
+                .map(f -> new BajarFormacionCommand.FormacionInput(
+                        TipoFormacion.valueOf(f.getTipo().toUpperCase()),
+                        f.getCartaIds()))
+                .toList();
 
         BajarFormacionCommand command = BajarFormacionCommand.of(
                 partidaId,
                 request.getJugadorId(),
-                tipo,
-                request.getCartaIds()
+                inputs
         );
 
-        Formacion formacion = bajarFormacionUseCase.ejecutar(command);
+        List<Formacion> formaciones = bajarFormacionUseCase.ejecutar(command);
 
-        EstadoJuegoResponse.FormacionResponse formacionResponse = mapper.toFormacionResponse(formacion);
+        List<MovimientoResponse.FormacionResponse> formacionResponses = formaciones.stream()
+                .map(f -> MovimientoResponse.FormacionResponse.builder()
+                        .id(f.getId())
+                        .tipo(f.getTipo().name())
+                        .build())
+                .toList();
 
         MovimientoResponse response = MovimientoResponse.builder()
                 .tipo("BAJAR")
                 .exito(true)
-                .mensaje("Formación bajada: " + tipo.getNombre())
-                .formacion(MovimientoResponse.FormacionResponse.builder()
-                        .id(formacion.getId())
-                        .tipo(formacion.getTipo().name())
-                        .build())
+                .mensaje("Formaciones bajadas: " + formaciones.size())
+                .formaciones(formacionResponses)
                 .build();
 
         return ResponseEntity.ok(response);

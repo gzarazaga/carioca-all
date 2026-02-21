@@ -1,6 +1,5 @@
 package com.carioca.domain.usecase.juego;
 
-import com.carioca.domain.exception.FormacionInvalidaException;
 import com.carioca.domain.exception.MovimientoInvalidoException;
 import com.carioca.domain.exception.PartidaNoEncontradaException;
 import com.carioca.domain.model.juego.Carta;
@@ -61,39 +60,42 @@ class BajarFormacionUseCaseTest {
     }
 
     @Nested
-    @DisplayName("Bajar pierna válida")
-    class BajarPiernaValida {
+    @DisplayName("Bajar piernas válidas")
+    class BajarPiernasValidas {
 
         @Test
-        @DisplayName("debe permitir bajar pierna con 3 cartas del mismo valor")
-        void debePermitirBajarPierna() {
+        @DisplayName("debe permitir bajar las dos piernas requeridas en ronda 1")
+        void debePermitirBajarDosPiernas() {
             // Arrange
             String partidaId = partida.getIdValue();
             Jugador jugador = partida.obtenerJugadorActual();
-
-            // Encontrar 3 cartas del mismo valor en la mano (o usar cartas de prueba)
             List<Carta> mano = jugador.getMano().getCartas();
-            List<String> cartaIds = encontrarCartasMismoValor(mano, 3);
 
-            if (cartaIds == null) {
-                // Si no hay 3 cartas iguales, skip test
-                return;
-            }
+            // Buscar dos grupos de 3 cartas del mismo valor
+            List<String> pierna1 = encontrarCartasMismoValor(mano, 3, List.of());
+            if (pierna1 == null) return;
+
+            List<String> pierna2 = encontrarCartasMismoValor(mano, 3, pierna1);
+            if (pierna2 == null) return;
 
             BajarFormacionCommand command = BajarFormacionCommand.of(
-                    partidaId, jugadorActualId, TipoFormacion.PIERNA, cartaIds
+                    partidaId, jugadorActualId,
+                    List.of(
+                            new BajarFormacionCommand.FormacionInput(TipoFormacion.PIERNA, pierna1),
+                            new BajarFormacionCommand.FormacionInput(TipoFormacion.PIERNA, pierna2)
+                    )
             );
 
             when(partidaRepository.findById(partidaId)).thenReturn(Optional.of(partida));
-            when(partidaRepository.save(any(Partida.class))).thenAnswer(invocation -> invocation.getArgument(0));
+            when(partidaRepository.save(any(Partida.class))).thenAnswer(inv -> inv.getArgument(0));
 
             // Act
-            Formacion formacion = useCase.ejecutar(command);
+            List<Formacion> formaciones = useCase.ejecutar(command);
 
             // Assert
-            assertNotNull(formacion);
-            assertEquals(TipoFormacion.PIERNA, formacion.getTipo());
-            assertEquals(3, formacion.cantidadCartas());
+            assertNotNull(formaciones);
+            assertEquals(2, formaciones.size());
+            assertTrue(formaciones.stream().allMatch(f -> f.getTipo() == TipoFormacion.PIERNA));
         }
     }
 
@@ -106,7 +108,9 @@ class BajarFormacionUseCaseTest {
         void debeLanzarExcepcionSiPartidaNoExiste() {
             // Arrange
             BajarFormacionCommand command = BajarFormacionCommand.of(
-                    "no-existe", jugadorActualId, TipoFormacion.PIERNA, List.of("c1", "c2", "c3")
+                    "no-existe", jugadorActualId,
+                    List.of(new BajarFormacionCommand.FormacionInput(
+                            TipoFormacion.PIERNA, List.of("c1", "c2", "c3")))
             );
             when(partidaRepository.findById("no-existe")).thenReturn(Optional.empty());
 
@@ -122,8 +126,9 @@ class BajarFormacionUseCaseTest {
             // Arrange
             String partidaId = partida.getIdValue();
             BajarFormacionCommand command = BajarFormacionCommand.of(
-                    partidaId, jugadorActualId, TipoFormacion.PIERNA,
-                    List.of("carta-fake-1", "carta-fake-2", "carta-fake-3")
+                    partidaId, jugadorActualId,
+                    List.of(new BajarFormacionCommand.FormacionInput(
+                            TipoFormacion.PIERNA, List.of("fake-1", "fake-2", "fake-3")))
             );
 
             when(partidaRepository.findById(partidaId)).thenReturn(Optional.of(partida));
@@ -135,48 +140,55 @@ class BajarFormacionUseCaseTest {
         }
 
         @Test
-        @DisplayName("debe notificar formación bajada")
-        void debeNotificarFormacionBajada() {
+        @DisplayName("debe notificar cada formación bajada")
+        void debeNotificarFormacionesBajadas() {
             // Arrange
             String partidaId = partida.getIdValue();
             Jugador jugador = partida.obtenerJugadorActual();
             List<Carta> mano = jugador.getMano().getCartas();
-            List<String> cartaIds = encontrarCartasMismoValor(mano, 3);
 
-            if (cartaIds == null) {
-                return;
-            }
+            List<String> pierna1 = encontrarCartasMismoValor(mano, 3, List.of());
+            if (pierna1 == null) return;
+            List<String> pierna2 = encontrarCartasMismoValor(mano, 3, pierna1);
+            if (pierna2 == null) return;
 
             BajarFormacionCommand command = BajarFormacionCommand.of(
-                    partidaId, jugadorActualId, TipoFormacion.PIERNA, cartaIds
+                    partidaId, jugadorActualId,
+                    List.of(
+                            new BajarFormacionCommand.FormacionInput(TipoFormacion.PIERNA, pierna1),
+                            new BajarFormacionCommand.FormacionInput(TipoFormacion.PIERNA, pierna2)
+                    )
             );
 
             when(partidaRepository.findById(partidaId)).thenReturn(Optional.of(partida));
-            when(partidaRepository.save(any(Partida.class))).thenAnswer(invocation -> invocation.getArgument(0));
+            when(partidaRepository.save(any(Partida.class))).thenAnswer(inv -> inv.getArgument(0));
 
             // Act
             useCase.ejecutar(command);
 
-            // Assert
-            verify(notificacionPort).notificarFormacionBajada(eq(partidaId), eq(jugadorActualId), any(Formacion.class));
+            // Assert — una notificación por cada formación bajada
+            verify(notificacionPort, times(2))
+                    .notificarFormacionBajada(eq(partidaId), eq(jugadorActualId), any(Formacion.class));
         }
     }
 
     /**
-     * Busca cartas del mismo valor en la mano.
+     * Busca en la mano {@code cantidad} cartas del mismo valor,
+     * excluyendo los IDs ya usados en {@code excluir}.
      */
-    private List<String> encontrarCartasMismoValor(List<Carta> mano, int cantidad) {
+    private List<String> encontrarCartasMismoValor(List<Carta> mano, int cantidad,
+                                                    List<String> excluir) {
         for (Valor valor : Valor.values()) {
             if (valor == Valor.COMODIN) continue;
 
-            List<String> cartasDelValor = mano.stream()
-                    .filter(c -> c.getValor() == valor)
+            List<String> candidatas = mano.stream()
+                    .filter(c -> c.getValor() == valor && !excluir.contains(c.getId()))
                     .map(Carta::getId)
                     .limit(cantidad)
                     .toList();
 
-            if (cartasDelValor.size() >= cantidad) {
-                return cartasDelValor;
+            if (candidatas.size() >= cantidad) {
+                return candidatas;
             }
         }
         return null;

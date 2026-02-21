@@ -5,6 +5,7 @@ import com.carioca.domain.exception.PartidaCompletaException;
 import com.carioca.domain.exception.TurnoInvalidoException;
 import com.carioca.domain.model.juego.*;
 import com.carioca.domain.model.jugador.Jugador;
+import com.carioca.domain.usecase.juego.bajarformacion.BajarFormacionCommand;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -21,7 +22,7 @@ public class Partida {
 
     public static final int MINIMO_JUGADORES = 2;
     public static final int MAXIMO_JUGADORES = 6;
-    public static final int CARTAS_INICIALES = 12;
+    public static final int CARTAS_INICIALES = 7;
 
     private final PartidaId id;
     private final List<Jugador> jugadores;
@@ -144,9 +145,10 @@ public class Partida {
         mazo.barajar();
 
         // Repartir cartas a cada jugador
+        int cartasARepartir = CARTAS_INICIALES + (numeroRonda - 1);
         for (Jugador jugador : jugadores) {
             jugador.prepararNuevaRonda();
-            List<Carta> cartasIniciales = mazo.robar(CARTAS_INICIALES);
+            List<Carta> cartasIniciales = mazo.robar(cartasARepartir);
             jugador.recibirCartas(cartasIniciales);
         }
 
@@ -223,53 +225,57 @@ public class Partida {
     }
 
     /**
-     * El jugador baja una formación (pierna o escalera).
+     * El jugador baja una o más formaciones (piernas o escaleras) en una sola jugada.
+     * La primera bajada debe cumplir todos los requisitos de la ronda de una sola vez.
      */
-    public Formacion bajarFormacion(String jugadorId, TipoFormacion tipo, List<String> cartaIds) {
+    public List<Formacion> bajarFormacion(String jugadorId,
+                                          List<BajarFormacionCommand.FormacionInput> inputs) {
         validarTurno(jugadorId, EstadoTurno.ESPERANDO_DESCARTAR);
 
         Jugador jugador = obtenerJugadorActual();
 
-        // Verificar que el jugador tenga todas las cartas
-        for (String cartaId : cartaIds) {
-            if (!jugador.tieneCarta(cartaId)) {
-                throw new MovimientoInvalidoException("El jugador no tiene todas las cartas especificadas");
+        // Verificar que el jugador tenga todas las cartas de todas las formaciones
+        for (BajarFormacionCommand.FormacionInput input : inputs) {
+            for (String cartaId : input.getCartaIds()) {
+                if (!jugador.tieneCarta(cartaId)) {
+                    throw new MovimientoInvalidoException("El jugador no tiene todas las cartas especificadas");
+                }
             }
         }
 
-        // Remover las cartas de la mano
-        List<Carta> cartas = jugador.removerCartas(cartaIds);
+        // Remover cartas y crear formaciones
+        List<Formacion> nuevasFormaciones = new ArrayList<>();
+        List<List<Carta>> cartasPorFormacion = new ArrayList<>();
+        for (BajarFormacionCommand.FormacionInput input : inputs) {
+            List<Carta> cartas = jugador.removerCartas(input.getCartaIds());
+            cartasPorFormacion.add(cartas);
+            nuevasFormaciones.add(Formacion.crear(input.getTipo(), cartas, jugadorId));
+        }
 
-        // Crear la formación
-        Formacion formacion = Formacion.crear(tipo, cartas, jugadorId);
-
-        // Si es la primera bajada del jugador, verificar requisitos de la ronda
+        // Si es la primera bajada, verificar que las formaciones cumplen los requisitos de la ronda
         if (!rondaActual.haBajado(jugadorId)) {
-            List<Formacion> formacionesExistentes = rondaActual.obtenerFormacionesJugador(jugadorId);
-            List<Formacion> todasFormaciones = new ArrayList<>(formacionesExistentes);
-            todasFormaciones.add(formacion);
+            List<Formacion> todasFormaciones = new ArrayList<>(rondaActual.obtenerFormacionesJugador(jugadorId));
+            todasFormaciones.addAll(nuevasFormaciones);
 
             if (!rondaActual.getConfig().cumpleRequisitos(todasFormaciones)) {
-                // Devolver las cartas al jugador
-                jugador.recibirCartas(cartas);
+                // Devolver todas las cartas al jugador
+                for (List<Carta> cartas : cartasPorFormacion) {
+                    jugador.recibirCartas(cartas);
+                }
                 throw new MovimientoInvalidoException(
                         "No cumples los requisitos de la ronda: " + rondaActual.getConfig().getDescripcion());
             }
-        }
-
-        // Registrar la bajada
-        if (!rondaActual.haBajado(jugadorId)) {
-            List<Formacion> formaciones = new ArrayList<>();
-            formaciones.add(formacion);
-            rondaActual.registrarBajada(jugadorId, formaciones);
+            rondaActual.registrarBajada(jugadorId, new ArrayList<>(nuevasFormaciones));
         } else {
-            rondaActual.obtenerFormacionesJugador(jugadorId).add(formacion);
+            rondaActual.obtenerFormacionesJugador(jugadorId).addAll(nuevasFormaciones);
         }
 
-        registrarMovimiento(Movimiento.bajarFormacion(jugadorId, id.getValor(),
-                rondaActual.getNumero(), numeroTurno, formacion));
+        for (Formacion formacion : nuevasFormaciones) {
+            registrarMovimiento(Movimiento.bajarFormacion(jugadorId, id.getValor(),
+                    rondaActual.getNumero(), numeroTurno, formacion));
+        }
 
-        return formacion;
+        return nuevasFormaciones;
     }
 
     /**
