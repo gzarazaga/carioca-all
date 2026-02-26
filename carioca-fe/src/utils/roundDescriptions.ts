@@ -24,3 +24,10 @@ export function getRoundRequirements(round: number): { piernas: number; escalera
   }
   return reqs[round] ?? { piernas: 0, escaleras: 0 }
 }
+
+const INITIAL_CARDS = 7
+
+export function getCardsPerRound(round: number): number {
+  if (round < 1 || round > 7) return 0
+  return INITIAL_CARDS + (round - 1)
+}

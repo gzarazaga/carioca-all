@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getRoundDescription, getRoundRequirements } from '../roundDescriptions'
+import { getRoundDescription, getRoundRequirements, getCardsPerRound } from '../roundDescriptions'
 
 describe('getRoundDescription', () => {
   const cases: [number, string][] = [
@@ -41,5 +41,29 @@ describe('getRoundRequirements', () => {
 
   it('returns zeros for unknown round', () => {
     expect(getRoundRequirements(99)).toEqual({ piernas: 0, escaleras: 0 })
+  })
+})
+
+describe('getCardsPerRound', () => {
+  const cases: [number, number][] = [
+    [1, 7],
+    [2, 8],
+    [3, 9],
+    [4, 10],
+    [5, 11],
+    [6, 12],
+    [7, 13],
+  ]
+
+  it.each(cases)('round %i deals %i cards', (round, expected) => {
+    expect(getCardsPerRound(round)).toBe(expected)
+  })
+
+  it('returns 0 for round below 1', () => {
+    expect(getCardsPerRound(0)).toBe(0)
+  })
+
+  it('returns 0 for round above 7', () => {
+    expect(getCardsPerRound(8)).toBe(0)
   })
 })
