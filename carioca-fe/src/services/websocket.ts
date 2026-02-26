@@ -23,7 +23,7 @@ export class GameWebSocket {
 
     const wsUrl = import.meta.env.DEV
       ? 'ws://localhost:8080/ws'
-      : `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`
+      : (import.meta.env.VITE_WS_URL ?? `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`)
     this.ws = new WebSocket(wsUrl)
 
     this.ws.onopen = () => {

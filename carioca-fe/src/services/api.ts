@@ -1,6 +1,6 @@
 import type { EstadoJuego, PartidaResponse, MovimientoResponse, Carta, FormacionInput } from '../types/game'
 
-const BASE = '/api/partidas'
+const BASE = `${import.meta.env.VITE_API_URL ?? ''}/api/partidas`
 
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {

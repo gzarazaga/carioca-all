@@ -45,7 +45,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://localhost:5432/cariocadb
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/cariocadb}
     driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME:carioca}
     password: ${DB_PASSWORD:carioca}
