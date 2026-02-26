@@ -135,7 +135,7 @@ public class Partida {
     /**
      * Inicia una nueva ronda.
      */
-    private void iniciarRonda(int numeroRonda) {
+    void iniciarRonda(int numeroRonda) {
         this.rondaActual = Ronda.iniciar(numeroRonda);
         this.indiceJugadorActual = 0;
         this.numeroTurno = 1;
