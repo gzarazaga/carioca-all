@@ -39,6 +39,9 @@ public class PartidaEntity {
     @Column(name = "indice_jugador_actual")
     private int indiceJugadorActual;
 
+    @Column(name = "jugador_actual_id", length = 36)
+    private String jugadorActualId;
+
     @Column(name = "numero_turno")
     private int numeroTurno;
 

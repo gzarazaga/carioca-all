@@ -29,12 +29,17 @@ public class PartidaPersistenceMapper {
             return null;
         }
 
+        String jugadorActualId = partida.estaEnCurso()
+                ? partida.obtenerJugadorActual().getIdValue()
+                : null;
+
         PartidaEntity entity = PartidaEntity.builder()
                 .id(partida.getIdValue())
                 .estado(partida.getEstado())
                 .estadoTurno(partida.getEstadoTurno())
                 .numeroRonda(partida.getNumeroRondaActual())
                 .indiceJugadorActual(partida.getIndiceJugadorActual())
+                .jugadorActualId(jugadorActualId)
                 .numeroTurno(partida.getNumeroTurno())
                 .fechaCreacion(partida.getFechaCreacion())
                 .fechaInicio(partida.getFechaInicio())
@@ -69,6 +74,17 @@ public class PartidaPersistenceMapper {
         Mazo mazo = Mazo.reconstitute(cartasMazo);
         PilaDescarte pilaDescarte = PilaDescarte.reconstitute(cartasDescarte);
 
+        // Recalculate indiceJugadorActual by ID to avoid dependency on list ordering
+        int indiceJugadorActual = entity.getIndiceJugadorActual();
+        if (entity.getJugadorActualId() != null) {
+            for (int i = 0; i < jugadores.size(); i++) {
+                if (jugadores.get(i).getIdValue().equals(entity.getJugadorActualId())) {
+                    indiceJugadorActual = i;
+                    break;
+                }
+            }
+        }
+
         return Partida.reconstitute(
                 PartidaId.of(entity.getId()),
                 jugadores,
@@ -77,7 +93,7 @@ public class PartidaPersistenceMapper {
                 ronda,
                 entity.getEstado(),
                 entity.getEstadoTurno(),
-                entity.getIndiceJugadorActual(),
+                indiceJugadorActual,
                 entity.getNumeroTurno(),
                 historial,
                 entity.getFechaCreacion(),
