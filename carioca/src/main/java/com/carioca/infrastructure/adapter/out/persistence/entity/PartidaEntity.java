@@ -58,7 +58,6 @@ public class PartidaEntity {
     private String ganadorId;
 
     @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @OrderColumn(name = "posicion")
     @Builder.Default
     private List<JugadorEntity> jugadores = new ArrayList<>();
 

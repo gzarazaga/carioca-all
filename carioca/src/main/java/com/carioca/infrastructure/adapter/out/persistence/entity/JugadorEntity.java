@@ -31,6 +31,9 @@ public class JugadorEntity {
     @Column(name = "conectado")
     private boolean conectado;
 
+    @Column(name = "posicion")
+    private int posicion;
+
     @Lob
     @Column(name = "mano_json", columnDefinition = "TEXT")
     private String manoJson;

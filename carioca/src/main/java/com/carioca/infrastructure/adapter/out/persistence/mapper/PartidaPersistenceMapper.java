@@ -52,8 +52,10 @@ public class PartidaPersistenceMapper {
                 .jugadores(new ArrayList<>())
                 .build();
 
-        for (Jugador jugador : partida.getJugadores()) {
-            JugadorEntity jugadorEntity = jugadorMapper.toEntity(jugador);
+        List<Jugador> jugadoresList = partida.getJugadores();
+        for (int i = 0; i < jugadoresList.size(); i++) {
+            JugadorEntity jugadorEntity = jugadorMapper.toEntity(jugadoresList.get(i));
+            jugadorEntity.setPosicion(i);
             entity.addJugador(jugadorEntity);
         }
 
@@ -65,7 +67,10 @@ public class PartidaPersistenceMapper {
             return null;
         }
 
-        List<Jugador> jugadores = jugadorMapper.toDomainList(entity.getJugadores());
+        List<JugadorEntity> jugadoresOrdenados = entity.getJugadores().stream()
+                .sorted(Comparator.comparingInt(JugadorEntity::getPosicion))
+                .toList();
+        List<Jugador> jugadores = jugadorMapper.toDomainList(jugadoresOrdenados);
         List<Carta> cartasMazo = deserializeCartas(entity.getMazoJson());
         List<Carta> cartasDescarte = deserializeCartas(entity.getDescarteJson());
         Ronda ronda = deserializeRonda(entity.getRondaJson(), entity.getNumeroRonda());
