@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useGameStore } from '../../stores/gameStore'
 import { useGameActions } from '../../hooks/useGameActions'
 import type { FormacionInput } from '../../types/game'
@@ -18,14 +18,16 @@ export default function FormationBuilder() {
   const [currentCardIds, setCurrentCardIds] = useState<string[]>([])
   const [currentTipo, setCurrentTipo] = useState<TipoFormacion>('PIERNA')
 
-  // Resetear estado cada vez que el builder se abre
-  useEffect(() => {
+  // Resetear estado cada vez que el builder se abre (ajuste durante el render, sin efecto)
+  const [prevShow, setPrevShow] = useState(show)
+  if (show !== prevShow) {
+    setPrevShow(show)
     if (show) {
       setFormaciones([])
       setCurrentCardIds([])
       setCurrentTipo('PIERNA')
     }
-  }, [show])
+  }
 
   if (!show) return null
 
