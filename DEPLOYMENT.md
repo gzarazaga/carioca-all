@@ -1,12 +1,20 @@
 # Deployment
 
-Notas de evaluación de hosting gratuito para los dos componentes + base de datos. Pendiente: ejecutar el deploy con la combinación elegida.
+## Estado actual (deployado) ✅
+
+| Componente | Servicio | URL |
+|---|---|---|
+| Frontend (`carioca-fe/`) | Vercel | https://carioca-one.vercel.app/ |
+| Backend (`carioca/`) | Render | https://carioca-ux.onrender.com |
+| Base de datos | Neon (Postgres) | `cariocadb`, host `ep-red-sunset-athe7jvt-pooler.c-9.us-east-1.aws.neon.tech` |
 
 ## Decisión
 
 **Render (backend) + Neon (base de datos) + Vercel (frontend).**
 
 Por qué: el Postgres free de Render expira a los 90 días y hay que recrearlo a mano, así que conviene desacoplar la DB del host de la app — Neon (Postgres serverless) no tiene ese límite. Fly.io queda como alternativa solo si el cold-start de Render (~30-60s tras 15 min de inactividad) resulta molesto, pero exige tarjeta para verificar la cuenta, cosa que Render no pide.
+
+**Nota histórica**: en el medio se probó Railway para el backend (con Postgres propio de Railway, no Neon). Se descartó al terminarse el free tier de Railway. La DB de Neon creada en la Fase 1 nunca se usó en ese período y siguió disponible, por lo que la migración a Render reutilizó esa misma base sin pérdida de datos de schema.
 
 ## Restricciones conocidas
 - Railway descartado: falló en un uso anterior.
@@ -33,9 +41,9 @@ Por qué: el Postgres free de Render expira a los 90 días y hay que recrearlo a
 - Si el cold-start no molesta: **Render + Neon + Vercel**. (Elegida)
 - Si se quiere evitar el sleep del backend: **Fly.io + Neon + Cloudflare Pages**.
 
-## Plan de ejecución
+## Plan de ejecución (histórico)
 
-Fases en orden — cada una depende de un dato que genera la anterior (DB → backend → frontend → CORS final).
+Fases en orden — cada una depende de un dato que genera la anterior (DB → backend → frontend → CORS final). Todas completadas; se dejan como referencia del proceso.
 
 ### Fase 1 — Base de datos (Neon) ✅
 - [x] Crear cuenta/proyecto en Neon, crear la base `cariocadb`.
@@ -51,26 +59,21 @@ Fases en orden — cada una depende de un dato que genera la anterior (DB → ba
   - `.dockerignore` agregado (`target/`, `.git/`, `.idea/`, etc.).
   - Validado con `docker build` + `docker run -e PORT=9090`: imagen compila, Tomcat arranca en el puerto pasado por `PORT`, schema de Hibernate se crea sin errores.
 
-### Fase 3 — Backend en Render
-- [ ] Crear Web Service en Render conectado a `github.com/gzarazaga/carioca-all`, root directory `carioca/`, runtime Docker.
-- [ ] Configurar env vars: `SPRING_PROFILES_ACTIVE=prod`, `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` (de la Fase 1). `CORS_ALLOWED_ORIGINS` se completa en la Fase 5.
-- [ ] Deploy y verificar logs de arranque (conexión a Neon exitosa, sin errores de `ddl-auto`).
-- [ ] Anotar la URL pública asignada (`https://<algo>.onrender.com`).
+### Fase 3 — Backend en Render ✅
+- [x] Web Service en Render conectado a `github.com/gzarazaga/carioca-all`, root directory `carioca/`, runtime Docker.
+- [x] Env vars configuradas: `SPRING_PROFILES_ACTIVE=prod`, `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` (Fase 1), `CORS_ALLOWED_ORIGINS` (Fase 5).
+- [x] URL pública: https://carioca-ux.onrender.com
 
-### Fase 4 — Frontend en Vercel
-- [ ] Crear proyecto en Vercel conectado al mismo repo, root directory `carioca-fe/`, preset Vite (build command `npm run build`, output `dist/`).
-- [ ] Configurar env vars de build: `VITE_API_URL=https://<render-domain>.onrender.com` y `VITE_WS_URL=wss://<render-domain>.onrender.com/ws`.
-- [ ] Deploy y anotar la URL asignada (`https://<algo>.vercel.app`).
+### Fase 4 — Frontend en Vercel ✅
+- [x] Proyecto en Vercel conectado al mismo repo, root directory `carioca-fe/`, preset Vite.
+- [x] Env vars de build: `VITE_API_URL=https://carioca-ux.onrender.com`, `VITE_WS_URL=wss://carioca-ux.onrender.com/ws`.
+- [x] URL pública: https://carioca-one.vercel.app/
 
-### Fase 5 — Cerrar el círculo: CORS
-- [ ] En Render, actualizar `CORS_ALLOWED_ORIGINS=https://<vercel-domain>.vercel.app` (sin slash final) y redeployar.
+### Fase 5 — Cerrar el círculo: CORS ✅
+- [x] `CORS_ALLOWED_ORIGINS=https://carioca-one.vercel.app` configurado en Render.
 
-### Fase 6 — Verificación end-to-end
-- [ ] Crear una partida desde la URL de Vercel (ejercita REST vía `VITE_API_URL`).
-- [ ] Unirse con un segundo jugador/pestaña y confirmar eventos en tiempo real (ejercita WebSocket `wss://` vía `VITE_WS_URL`).
-- [ ] Revisar consola del navegador: sin errores de CORS, WS en estado `OPEN`.
-- [ ] Revisar logs de Render: sin excepciones, queries a Neon respondiendo.
-- [ ] Reemplazar esta sección con las URLs finales de Render/Vercel/Neon.
+### Fase 6 — Verificación end-to-end ✅
+- [x] Confirmado funcionando en producción (creación de partida, tiempo real vía WebSocket, sin errores de CORS).
 
 ## Notas
 - Las credenciales de Neon/Render/Vercel se configuran en los dashboards de cada servicio, nunca se commitean al repo.
