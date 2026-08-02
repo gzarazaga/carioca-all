@@ -9,6 +9,7 @@ import ActionBar from '../components/actions/ActionBar'
 import FormationBuilder from '../components/actions/FormationBuilder'
 import PegarDialog from '../components/actions/PegarDialog'
 import Scoreboard from '../components/common/Scoreboard'
+import Button from '../components/common/Button'
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -49,7 +50,7 @@ export default function GamePage() {
   }, [estado?.estado, gameEndInfo, id, navigate])
 
   return (
-    <div className="min-h-screen bg-green-900 relative">
+    <div className="min-h-screen bg-felt-900 relative">
       <GameBoard />
       <ActionBar />
       <FormationBuilder />
@@ -58,17 +59,14 @@ export default function GamePage() {
       {/* Round end overlay */}
       {roundEndInfo && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-green-900 border border-green-600 rounded-xl p-6 max-w-md w-full text-center">
+          <div className="bg-felt-900 border border-felt-600 rounded-xl p-6 max-w-md w-full text-center">
             <h2 className="text-2xl font-bold mb-4">Ronda terminada!</h2>
             {estado && (
               <Scoreboard jugadores={estado.jugadores} ganadorId={roundEndInfo.ganadorId} />
             )}
-            <button
-              onClick={() => setRoundEndInfo(null)}
-              className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition-colors"
-            >
+            <Button onClick={() => setRoundEndInfo(null)} variant="primary" size="md" className="mt-4">
               Continuar
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -76,9 +74,9 @@ export default function GamePage() {
       {/* Game end overlay */}
       {gameEndInfo && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-green-900 border border-yellow-500 rounded-xl p-6 max-w-md w-full text-center">
+          <div className="bg-felt-900 border border-warning-500 rounded-xl p-6 max-w-md w-full text-center">
             <h2 className="text-3xl font-bold mb-2">🏆 Partida terminada!</h2>
-            <p className="text-green-300 mb-4">Redirigiendo a resultados...</p>
+            <p className="text-felt-300 mb-4">Redirigiendo a resultados...</p>
             {estado && (
               <Scoreboard jugadores={estado.jugadores} ganadorId={gameEndInfo.ganadorId} />
             )}

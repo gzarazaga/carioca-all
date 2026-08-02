@@ -15,21 +15,21 @@ export default function DiscardPile() {
     <button
       onClick={() => canDraw && robar(false)}
       disabled={!canDraw}
-      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
+      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 ${
         canDraw
-          ? 'hover:bg-green-700/50 cursor-pointer ring-2 ring-yellow-400/60'
+          ? 'hover:bg-felt-700/50 cursor-pointer ring-2 ring-warning-400/60'
           : 'cursor-default'
       }`}
     >
       {topCard ? (
         <Card carta={topCard} />
       ) : (
-        <div className="w-16 h-24 rounded-lg border-2 border-dashed border-green-600 flex items-center justify-center text-green-600 text-xs">
+        <div className="w-16 h-24 rounded-lg border-2 border-dashed border-felt-600 flex items-center justify-center text-felt-600 text-xs">
           Vacío
         </div>
       )}
-      <span className="text-xs text-green-300">Descarte</span>
-      {canDraw && <span className="text-xs text-yellow-300">Click para tomar</span>}
+      <span className="text-xs text-felt-300">Descarte</span>
+      {canDraw && <span className="text-xs text-warning-300">Click para tomar</span>}
     </button>
   )
 }

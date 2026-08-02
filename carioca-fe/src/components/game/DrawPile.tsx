@@ -15,15 +15,15 @@ export default function DrawPile() {
     <button
       onClick={() => canDraw && robar(true)}
       disabled={!canDraw}
-      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all ${
+      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 ${
         canDraw
-          ? 'hover:bg-green-700/50 cursor-pointer ring-2 ring-yellow-400/60'
+          ? 'hover:bg-felt-700/50 cursor-pointer ring-2 ring-warning-400/60'
           : 'opacity-70 cursor-default'
       }`}
     >
       <CardBack />
-      <span className="text-xs text-green-300">{cartasEnMazo} cartas</span>
-      {canDraw && <span className="text-xs text-yellow-300">Click para robar</span>}
+      <span className="text-xs text-felt-300">{cartasEnMazo} cartas</span>
+      {canDraw && <span className="text-xs text-warning-300">Click para robar</span>}
     </button>
   )
 }

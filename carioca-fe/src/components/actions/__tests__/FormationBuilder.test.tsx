@@ -94,9 +94,9 @@ describe('FormationBuilder', () => {
     setStoreOpen()
     render(<FormationBuilder />)
     const piernaBtn = screen.getByText('Pierna')
-    expect(piernaBtn.className).toContain('bg-blue-600')
+    expect(piernaBtn.className).toContain('bg-primary-600')
     const escaleraBtn = screen.getByText('Escalera')
-    expect(escaleraBtn.className).not.toContain('bg-blue-600')
+    expect(escaleraBtn.className).not.toContain('bg-primary-600')
   })
 
   it('cambia el tipo al hacer click en Escalera', () => {
@@ -104,7 +104,7 @@ describe('FormationBuilder', () => {
     render(<FormationBuilder />)
     fireEvent.click(screen.getByText('Escalera'))
     const escaleraBtn = screen.getByText('Escalera')
-    expect(escaleraBtn.className).toContain('bg-blue-600')
+    expect(escaleraBtn.className).toContain('bg-primary-600')
   })
 
   // -------------------------------------------------------------------------

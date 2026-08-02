@@ -18,7 +18,7 @@ describe('Card', () => {
     const { container } = render(<Card carta={carta} selected={true} />)
 
     const cardDiv = container.firstChild as HTMLElement
-    expect(cardDiv.className).toContain('border-blue-400')
+    expect(cardDiv.className).toContain('border-primary-400')
     expect(cardDiv.className).toContain('card-selected')
   })
 
@@ -27,8 +27,8 @@ describe('Card', () => {
     const { container } = render(<Card carta={carta} selected={false} />)
 
     const cardDiv = container.firstChild as HTMLElement
-    expect(cardDiv.className).not.toContain('border-blue-400')
-    expect(cardDiv.className).toContain('border-gray-300')
+    expect(cardDiv.className).not.toContain('border-primary-400')
+    expect(cardDiv.className).toContain('border-neutral-300')
   })
 
   it('calls onClick when clicked', () => {

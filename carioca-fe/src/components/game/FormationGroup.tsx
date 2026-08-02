@@ -11,8 +11,8 @@ export default function FormationGroup({ formacion }: Props) {
   const owner = jugadores.find((j) => j.id === formacion.propietarioId)
 
   return (
-    <div className="bg-green-800/50 rounded-lg p-2 border border-green-600">
-      <div className="text-xs text-green-300 mb-1">
+    <div className="bg-felt-800/50 rounded-lg p-2 border border-felt-600">
+      <div className="text-xs text-felt-300 mb-1">
         {formacion.tipo === 'PIERNA' ? 'Pierna' : 'Escalera'}
         {owner && <span className="ml-1">({owner.nombre})</span>}
       </div>

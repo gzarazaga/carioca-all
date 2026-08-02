@@ -1,9 +1,9 @@
 import { useGameStore } from '../../stores/gameStore'
 
 const COLORS = {
-  info: 'bg-blue-600',
-  success: 'bg-green-600',
-  error: 'bg-red-600',
+  info: 'bg-primary-600',
+  success: 'bg-success-600',
+  error: 'bg-danger-600',
 }
 
 export default function Toast() {
@@ -23,7 +23,8 @@ export default function Toast() {
           <span>{t.text}</span>
           <button
             onClick={() => removeToast(t.id)}
-            className="ml-2 opacity-70 hover:opacity-100"
+            aria-label="Cerrar"
+            className="ml-2 opacity-70 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 rounded"
           >
             ✕
           </button>

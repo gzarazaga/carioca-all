@@ -3,6 +3,7 @@ import { useGameStore } from '../../stores/gameStore'
 import { useGameActions } from '../../hooks/useGameActions'
 import type { FormacionInput } from '../../types/game'
 import Card from '../card/Card'
+import Button from '../common/Button'
 
 type TipoFormacion = 'PIERNA' | 'ESCALERA'
 
@@ -72,15 +73,15 @@ export default function FormationBuilder() {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-green-900 border border-green-600 rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-felt-900 border border-felt-600 rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Bajar formaciones</h2>
 
         {/* Pool de cartas disponibles */}
         {poolCartas.length > 0 && (
           <div className="mb-4">
-            <p className="text-sm text-green-300 mb-2">
+            <p className="text-sm text-felt-300 mb-2">
               Cartas disponibles{' '}
-              <span className="text-xs text-gray-400">(click para agregar a la formación actual)</span>
+              <span className="text-xs text-neutral-400">(click para agregar a la formación actual)</span>
               :
             </p>
             <div className="flex gap-1 flex-wrap">
@@ -92,8 +93,8 @@ export default function FormationBuilder() {
         )}
 
         {/* Formación actual en construcción */}
-        <div className="mb-4 border border-green-700 rounded-lg p-3">
-          <p className="text-sm text-green-300 mb-2 font-semibold">
+        <div className="mb-4 border border-felt-700 rounded-lg p-3">
+          <p className="text-sm text-felt-300 mb-2 font-semibold">
             Formación actual{formaciones.length > 0 ? ` (#${formaciones.length + 1})` : ''}:
           </p>
 
@@ -110,7 +111,7 @@ export default function FormationBuilder() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-gray-400 mb-3">
+            <p className="text-xs text-neutral-400 mb-3">
               {poolIds.length > 0
                 ? 'Seleccioná cartas de arriba para armar esta formación'
                 : 'No quedan cartas disponibles'}
@@ -119,32 +120,26 @@ export default function FormationBuilder() {
 
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex gap-2">
-              <button
+              <Button
                 onClick={() => setCurrentTipo('PIERNA')}
-                className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-colors ${
-                  currentTipo === 'PIERNA' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'
-                }`}
+                variant={currentTipo === 'PIERNA' ? 'primary' : 'neutral'}
+                size="sm"
               >
                 Pierna
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setCurrentTipo('ESCALERA')}
-                className={`px-3 py-1.5 rounded-lg font-bold text-xs transition-colors ${
-                  currentTipo === 'ESCALERA' ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'
-                }`}
+                variant={currentTipo === 'ESCALERA' ? 'primary' : 'neutral'}
+                size="sm"
               >
                 Escalera
-              </button>
+              </Button>
             </div>
 
             {poolIds.length > 0 && (
-              <button
-                onClick={agregarFormacion}
-                disabled={!canAgregar}
-                className="px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 rounded-lg text-xs font-bold disabled:opacity-50 transition-colors"
-              >
+              <Button onClick={agregarFormacion} disabled={!canAgregar} variant="warning" size="sm">
                 + Agregar al listado
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -152,15 +147,15 @@ export default function FormationBuilder() {
         {/* Formaciones ya armadas */}
         {formaciones.length > 0 && (
           <div className="mb-4">
-            <p className="text-sm text-green-300 mb-2 font-semibold">
+            <p className="text-sm text-felt-300 mb-2 font-semibold">
               Listas para bajar ({formaciones.length}):
             </p>
             <div className="flex flex-col gap-2">
               {formaciones.map((f, i) => {
                 const cartas = misCartas.filter((c) => f.cartaIds.includes(c.id))
                 return (
-                  <div key={i} className="flex items-center gap-2 bg-green-800 rounded-lg p-2">
-                    <span className="text-xs font-bold text-blue-300 shrink-0">{f.tipo}</span>
+                  <div key={i} className="flex items-center gap-2 bg-felt-800 rounded-lg p-2">
+                    <span className="text-xs font-bold text-primary-300 shrink-0">{f.tipo}</span>
                     <div className="flex gap-1 flex-wrap flex-1">
                       {cartas.map((c) => (
                         <Card key={c.id} carta={c} small />
@@ -168,7 +163,8 @@ export default function FormationBuilder() {
                     </div>
                     <button
                       onClick={() => quitarFormacion(i)}
-                      className="text-xs text-red-400 hover:text-red-300 shrink-0 px-1"
+                      aria-label="Quitar formación"
+                      className="text-xs text-danger-400 hover:text-danger-300 shrink-0 px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-400 rounded"
                     >
                       ✕
                     </button>
@@ -180,19 +176,12 @@ export default function FormationBuilder() {
         )}
 
         <div className="flex gap-2 justify-end">
-          <button
-            onClick={() => setShowFormationBuilder(false)}
-            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-sm transition-colors"
-          >
+          <Button onClick={() => setShowFormationBuilder(false)} variant="neutral" size="md" bold={false}>
             Cancelar
-          </button>
-          <button
-            onClick={confirmar}
-            disabled={!canConfirmar}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-sm disabled:opacity-50 transition-colors"
-          >
+          </Button>
+          <Button onClick={confirmar} disabled={!canConfirmar} variant="primary" size="md">
             Confirmar ({totalFormaciones})
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useGameStore } from '../stores/gameStore'
 import * as api from '../services/api'
 import { clearSession, loadSession } from '../utils/storage'
 import Scoreboard from '../components/common/Scoreboard'
+import Button from '../components/common/Button'
 
 export default function ResultsPage() {
   const { id } = useParams<{ id: string }>()
@@ -41,14 +42,14 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-green-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-6 text-center">
         <h1 className="text-4xl font-bold">
           {isWinner ? '🎉 Ganaste!' : '🏆 Fin de la partida'}
         </h1>
 
         {ganador && (
-          <p className="text-xl text-yellow-300">
+          <p className="text-xl text-warning-300">
             Ganador: <strong>{ganador.nombre}</strong> con {ganador.puntosTotales} puntos
           </p>
         )}
@@ -59,12 +60,9 @@ export default function ResultsPage() {
           </div>
         )}
 
-        <button
-          onClick={handleNewGame}
-          className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-lg transition-colors"
-        >
+        <Button onClick={handleNewGame} variant="primary" size="lg" className="w-full">
           Nueva partida
-        </button>
+        </Button>
       </div>
     </div>
   )

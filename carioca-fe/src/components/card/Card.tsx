@@ -22,7 +22,7 @@ export default function Card({ carta, selected, onClick, small }: Props) {
       className={`
         ${size} rounded-lg bg-white border-2 flex flex-col items-center justify-between
         p-1 cursor-pointer transition-all duration-200 card-shadow select-none
-        ${selected ? 'card-selected border-blue-400' : 'border-gray-300 hover:border-gray-400'}
+        ${selected ? 'card-selected border-primary-400' : 'border-neutral-300 hover:border-neutral-400'}
         ${onClick ? 'hover:-translate-y-1' : ''}
       `}
     >

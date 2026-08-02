@@ -1,5 +1,6 @@
 import { useGameStore, useIsMyTurn, useMyPlayer } from '../../stores/gameStore'
 import { useGameActions } from '../../hooks/useGameActions'
+import Button from '../common/Button'
 
 export default function ActionBar() {
   const estado = useGameStore((s) => s.estado)
@@ -23,45 +24,30 @@ export default function ActionBar() {
     <div className="flex gap-2 flex-wrap justify-center p-2">
       {/* Discard */}
       {mustDiscard && singleSelected && (
-        <button
-          onClick={() => descartar(selectedCardIds[0])}
-          disabled={loading}
-          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-sm disabled:opacity-50 transition-colors"
-        >
+        <Button onClick={() => descartar(selectedCardIds[0])} disabled={loading} variant="danger" size="md">
           Descartar
-        </button>
+        </Button>
       )}
 
       {/* Bajar formation */}
       {mustDiscard && selectedCardIds.length >= 3 && (
-        <button
-          onClick={() => setShowFormationBuilder(true)}
-          disabled={loading}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold text-sm disabled:opacity-50 transition-colors"
-        >
+        <Button onClick={() => setShowFormationBuilder(true)} disabled={loading} variant="primary" size="md">
           Bajar formacion
-        </button>
+        </Button>
       )}
 
       {/* Pegar */}
       {mustDiscard && singleSelected && hasFormations && (myPlayer?.haBajado || hasFormations) && (
-        <button
-          onClick={() => setShowPegarDialog(true)}
-          disabled={loading}
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold text-sm disabled:opacity-50 transition-colors"
-        >
+        <Button onClick={() => setShowPegarDialog(true)} disabled={loading} variant="accent" size="md">
           Pegar a formacion
-        </button>
+        </Button>
       )}
 
       {/* Clear selection */}
       {hasSelection && (
-        <button
-          onClick={clearSelection}
-          className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg text-sm transition-colors"
-        >
+        <Button onClick={clearSelection} variant="neutral" size="md" bold={false}>
           Limpiar ({selectedCardIds.length})
-        </button>
+        </Button>
       )}
     </div>
   )

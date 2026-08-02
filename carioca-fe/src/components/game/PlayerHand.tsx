@@ -10,10 +10,10 @@ export default function PlayerHand() {
 
   return (
     <div className="w-full">
-      <div className="text-xs text-green-300 text-center mb-1">
+      <div className="text-xs text-felt-300 text-center mb-1">
         Tu mano ({misCartas.length} cartas)
         {selectedCardIds.length > 0 && (
-          <span className="ml-2 text-blue-300">
+          <span className="ml-2 text-primary-300">
             {selectedCardIds.length} seleccionada{selectedCardIds.length > 1 ? 's' : ''}
           </span>
         )}

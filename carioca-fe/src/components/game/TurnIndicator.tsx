@@ -12,7 +12,7 @@ export default function TurnIndicator() {
 
   return (
     <div className={`rounded-lg px-4 py-2 text-center font-bold ${
-      isMyTurn ? 'bg-yellow-500 text-black animate-pulse' : 'bg-green-800/80'
+      isMyTurn ? 'bg-warning-500 text-black animate-pulse' : 'bg-felt-800/80'
     }`}>
       {isMyTurn
         ? `Tu turno — ${turnLabel}`

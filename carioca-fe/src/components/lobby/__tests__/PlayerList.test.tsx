@@ -29,13 +29,13 @@ describe('PlayerList', () => {
       <PlayerList jugadores={jugadores} currentPlayerId={null} />
     )
 
-    const greenDots = container.querySelectorAll('.bg-green-400')
-    const grayDots = container.querySelectorAll('.bg-gray-500')
+    const connectedDots = container.querySelectorAll('.bg-success-400')
+    const disconnectedDots = container.querySelectorAll('.bg-neutral-500')
 
     // Alice and Bob are connected
-    expect(greenDots).toHaveLength(2)
+    expect(connectedDots).toHaveLength(2)
     // Carlos is disconnected
-    expect(grayDots).toHaveLength(1)
+    expect(disconnectedDots).toHaveLength(1)
   })
 
   it('shows "Tu" badge for current player', () => {
