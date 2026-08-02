@@ -4,6 +4,7 @@ import * as api from '../services/api'
 import { useGameStore } from '../stores/gameStore'
 import { saveSession, loadSession, clearSession } from '../utils/storage'
 import Button from '../components/common/Button'
+import CardBackground from '../components/common/CardBackground'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -81,8 +82,9 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-6">
+    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4 relative overflow-hidden">
+      <CardBackground />
+      <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center">
           <h1 className="text-5xl font-bold mb-2">🃏 Carioca</h1>
           <p className="text-felt-300">Juego de cartas para 2-6 jugadores</p>

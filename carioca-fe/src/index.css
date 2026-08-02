@@ -58,10 +58,37 @@
 
 @layer components {
   .card-shadow {
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.25);
   }
   .card-selected {
-    transform: translateY(-12px);
-    box-shadow: 0 0 12px rgba(59, 130, 246, 0.7);
+    transform: translateY(-14px) scale(1.05);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.6), 0 10px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Patron tipo enrejado para el dorso de las cartas */
+  .card-back-pattern {
+    background-color: var(--color-primary-700);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0.08) 2px, transparent 2px, transparent 10px),
+      repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0.08) 2px, transparent 2px, transparent 10px);
+  }
+}
+
+@keyframes card-float {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-18px) rotate(calc(var(--rot, 0deg) + 3deg));
+  }
+}
+
+.animate-card-float {
+  animation: card-float 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-card-float {
+    animation: none;
   }
 }

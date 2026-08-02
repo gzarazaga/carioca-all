@@ -8,13 +8,12 @@ export default function CardBack({ small }: Props) {
   return (
     <div
       className={`
-        ${size} rounded-lg bg-blue-800 border-2 border-blue-900
-        flex items-center justify-center card-shadow select-none
+        ${size} rounded-xl card-back-pattern border-2 border-primary-900
+        flex items-center justify-center card-shadow select-none relative overflow-hidden
       `}
     >
-      <div className="w-[80%] h-[80%] rounded border-2 border-blue-600 bg-blue-700 flex items-center justify-center">
-        <span className="text-blue-400 text-lg font-bold">C</span>
-      </div>
+      <div className="absolute inset-1 rounded-lg border border-warning-400/40" />
+      <span className="text-warning-300 text-lg font-serif italic drop-shadow relative">C</span>
     </div>
   )
 }
