@@ -84,6 +84,43 @@ class ValidadorFormacionServiceTest {
 
             assertTrue(validador.esPiernaValida(cartas));
         }
+
+        @Test
+        @DisplayName("debe rechazar pierna de 3 cartas con palo repetido")
+        void debeRechazarPiernaDeTresConPaloRepetido() {
+            List<Carta> cartas = List.of(
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.of(Valor.OCHO, Palo.PICAS)
+            );
+
+            assertFalse(validador.esPiernaValida(cartas));
+        }
+
+        @Test
+        @DisplayName("debe permitir palo repetido en pierna de 4 o más cartas")
+        void debePermitirPaloRepetidoEnPiernaDeCuatro() {
+            List<Carta> cartas = List.of(
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.of(Valor.OCHO, Palo.PICAS),
+                    Carta.of(Valor.OCHO, Palo.DIAMANTES)
+            );
+
+            assertTrue(validador.esPiernaValida(cartas));
+        }
+
+        @Test
+        @DisplayName("debe rechazar pierna de 3 cartas con palo repetido aunque incluya un comodín")
+        void debeRechazarPiernaDeTresConPaloRepetidoYComodin() {
+            List<Carta> cartas = List.of(
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.of(Valor.OCHO, Palo.CORAZONES),
+                    Carta.crearComodin()
+            );
+
+            assertFalse(validador.esPiernaValida(cartas));
+        }
     }
 
     @Nested
