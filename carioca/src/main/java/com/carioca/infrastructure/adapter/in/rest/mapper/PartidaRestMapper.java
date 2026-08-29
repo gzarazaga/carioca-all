@@ -37,6 +37,7 @@ public class PartidaRestMapper {
                 .fechaCreacion(estado.getFechaCreacion())
                 .fechaInicio(estado.getFechaInicio())
                 .ganadorId(estado.getGanadorId())
+                .modoTest(estado.isModoTest())
                 .build();
     }
 

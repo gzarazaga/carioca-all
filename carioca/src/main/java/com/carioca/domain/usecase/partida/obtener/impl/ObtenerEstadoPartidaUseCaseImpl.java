@@ -50,6 +50,7 @@ public class ObtenerEstadoPartidaUseCaseImpl implements ObtenerEstadoPartidaUseC
                 .fechaCreacion(partida.getFechaCreacion())
                 .fechaInicio(partida.getFechaInicio())
                 .ganadorId(partida.getGanadorId())
+                .modoTest(partida.isModoTest())
                 .build();
     }
 

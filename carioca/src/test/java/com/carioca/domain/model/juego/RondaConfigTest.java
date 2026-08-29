@@ -36,7 +36,7 @@ class RondaConfigTest {
         })
         @DisplayName("debe tener la configuración correcta para cada ronda")
         void debeConfigurarRondaCorrectamente(int numero, int piernas, int escaleras, String descripcion) {
-            RondaConfig config = RondaConfig.obtenerConfiguracion(numero);
+            RondaConfig config = RondaConfig.obtenerConfiguracion(numero, false);
 
             assertEquals(numero, config.getNumeroRonda());
             assertEquals(piernas, config.getPiernasRequeridas());
@@ -48,11 +48,49 @@ class RondaConfigTest {
         @DisplayName("debe lanzar excepción para ronda inválida")
         void debeLanzarExcepcionParaRondaInvalida() {
             assertThrows(IllegalArgumentException.class, () ->
-                    RondaConfig.obtenerConfiguracion(0)
+                    RondaConfig.obtenerConfiguracion(0, false)
             );
             assertThrows(IllegalArgumentException.class, () ->
-                    RondaConfig.obtenerConfiguracion(8)
+                    RondaConfig.obtenerConfiguracion(8, false)
             );
+        }
+    }
+
+    @Nested
+    @DisplayName("Modo test")
+    class ModoTest {
+
+        @Test
+        @DisplayName("debe tener solo 2 rondas configuradas")
+        void debeTener2Rondas() {
+            assertEquals(2, RondaConfig.RONDAS_TEST.size());
+        }
+
+        @Test
+        @DisplayName("ambas rondas deben requerir solo 1 pierna")
+        void ambasRondasRequierenSoloUnaPierna() {
+            RondaConfig ronda1 = RondaConfig.obtenerConfiguracion(1, true);
+            RondaConfig ronda2 = RondaConfig.obtenerConfiguracion(2, true);
+
+            assertEquals(1, ronda1.getPiernasRequeridas());
+            assertEquals(0, ronda1.getEscalerasRequeridas());
+            assertEquals(1, ronda2.getPiernasRequeridas());
+            assertEquals(0, ronda2.getEscalerasRequeridas());
+        }
+
+        @Test
+        @DisplayName("debe lanzar excepción para ronda 3 en modo test")
+        void debeLanzarExcepcionParaRonda3() {
+            assertThrows(IllegalArgumentException.class, () ->
+                    RondaConfig.obtenerConfiguracion(3, true)
+            );
+        }
+
+        @Test
+        @DisplayName("obtenerRondas debe devolver la lista según el modo")
+        void obtenerRondasSegunModo() {
+            assertSame(RondaConfig.RONDAS_TEST, RondaConfig.obtenerRondas(true));
+            assertSame(RondaConfig.RONDAS_CARIOCA, RondaConfig.obtenerRondas(false));
         }
     }
 
@@ -63,7 +101,7 @@ class RondaConfigTest {
         @Test
         @DisplayName("ronda 1 debe requerir 2 piernas")
         void ronda1DebeRequerir2Piernas() {
-            RondaConfig config = RondaConfig.obtenerConfiguracion(1);
+            RondaConfig config = RondaConfig.obtenerConfiguracion(1, false);
 
             // Con 2 piernas debe cumplir
             List<Formacion> formacionesCumplen = crearFormaciones(2, 0);
@@ -77,7 +115,7 @@ class RondaConfigTest {
         @Test
         @DisplayName("ronda 2 debe requerir 1 pierna + 1 escalera")
         void ronda2DebeRequerir1PiernaMas1Escalera() {
-            RondaConfig config = RondaConfig.obtenerConfiguracion(2);
+            RondaConfig config = RondaConfig.obtenerConfiguracion(2, false);
 
             // Con 1 pierna + 1 escalera debe cumplir
             List<Formacion> formacionesCumplen = crearFormaciones(1, 1);
@@ -95,7 +133,7 @@ class RondaConfigTest {
         @Test
         @DisplayName("ronda 7 debe requerir 3 escaleras")
         void ronda7DebeRequerir3Escaleras() {
-            RondaConfig config = RondaConfig.obtenerConfiguracion(7);
+            RondaConfig config = RondaConfig.obtenerConfiguracion(7, false);
 
             // Con 3 escaleras debe cumplir
             List<Formacion> formacionesCumplen = crearFormaciones(0, 3);
@@ -109,7 +147,7 @@ class RondaConfigTest {
         @Test
         @DisplayName("debe permitir más formaciones de las requeridas")
         void debePermitirMasFormaciones() {
-            RondaConfig config = RondaConfig.obtenerConfiguracion(1); // Requiere 2 piernas
+            RondaConfig config = RondaConfig.obtenerConfiguracion(1, false); // Requiere 2 piernas
 
             // Con 3 piernas también debe cumplir
             List<Formacion> formaciones = crearFormaciones(3, 0);
@@ -119,10 +157,10 @@ class RondaConfigTest {
         @Test
         @DisplayName("getTotalFormacionesRequeridas debe sumar piernas y escaleras")
         void getTotalFormacionesRequeridas() {
-            assertEquals(2, RondaConfig.obtenerConfiguracion(1).getTotalFormacionesRequeridas());
-            assertEquals(2, RondaConfig.obtenerConfiguracion(2).getTotalFormacionesRequeridas());
-            assertEquals(3, RondaConfig.obtenerConfiguracion(4).getTotalFormacionesRequeridas());
-            assertEquals(3, RondaConfig.obtenerConfiguracion(7).getTotalFormacionesRequeridas());
+            assertEquals(2, RondaConfig.obtenerConfiguracion(1, false).getTotalFormacionesRequeridas());
+            assertEquals(2, RondaConfig.obtenerConfiguracion(2, false).getTotalFormacionesRequeridas());
+            assertEquals(3, RondaConfig.obtenerConfiguracion(4, false).getTotalFormacionesRequeridas());
+            assertEquals(3, RondaConfig.obtenerConfiguracion(7, false).getTotalFormacionesRequeridas());
         }
     }
 

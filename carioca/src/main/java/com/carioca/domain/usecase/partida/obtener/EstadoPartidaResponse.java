@@ -29,6 +29,7 @@ public class EstadoPartidaResponse {
     Instant fechaCreacion;
     Instant fechaInicio;
     String ganadorId;
+    boolean modoTest;
 
     @Value
     @Builder

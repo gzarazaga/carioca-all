@@ -38,11 +38,15 @@ public class Partida {
     private Instant fechaInicio;
     private Instant fechaFin;
     private String ganadorId;
+    private final boolean modoTest;
+
+    private static final String PREFIJO_NOMBRE_TEST = "test";
 
     private Partida(PartidaId id, List<Jugador> jugadores, Mazo mazo, PilaDescarte pilaDescarte,
                     Ronda rondaActual, EstadoPartida estado, EstadoTurno estadoTurno,
                     int indiceJugadorActual, int numeroTurno, List<Movimiento> historialMovimientos,
-                    Instant fechaCreacion, Instant fechaInicio, Instant fechaFin, String ganadorId) {
+                    Instant fechaCreacion, Instant fechaInicio, Instant fechaFin, String ganadorId,
+                    boolean modoTest) {
         this.id = id;
         this.jugadores = new ArrayList<>(jugadores);
         this.mazo = mazo;
@@ -57,10 +61,13 @@ public class Partida {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.ganadorId = ganadorId;
+        this.modoTest = modoTest;
     }
 
     /**
      * Crea una nueva partida.
+     * Si el nombre de quien la crea empieza con "test", la partida arranca en modo test:
+     * solo 2 rondas simples (1 Pierna cada una) para probar el flujo completo rápido.
      */
     public static Partida crear(Jugador creador) {
         List<Jugador> jugadores = new ArrayList<>();
@@ -80,8 +87,13 @@ public class Partida {
                 Instant.now(),
                 null,
                 null,
-                null
+                null,
+                esNombreDeTest(creador.getNombre())
         );
+    }
+
+    private static boolean esNombreDeTest(String nombre) {
+        return nombre != null && nombre.trim().toLowerCase().startsWith(PREFIJO_NOMBRE_TEST);
     }
 
     /**
@@ -93,10 +105,10 @@ public class Partida {
                                        int indiceJugadorActual, int numeroTurno,
                                        List<Movimiento> historialMovimientos,
                                        Instant fechaCreacion, Instant fechaInicio,
-                                       Instant fechaFin, String ganadorId) {
+                                       Instant fechaFin, String ganadorId, boolean modoTest) {
         return new Partida(id, jugadores, mazo, pilaDescarte, rondaActual, estado, estadoTurno,
                 indiceJugadorActual, numeroTurno, historialMovimientos, fechaCreacion,
-                fechaInicio, fechaFin, ganadorId);
+                fechaInicio, fechaFin, ganadorId, modoTest);
     }
 
     /**
@@ -136,7 +148,7 @@ public class Partida {
      * Inicia una nueva ronda.
      */
     void iniciarRonda(int numeroRonda) {
-        this.rondaActual = Ronda.iniciar(numeroRonda);
+        this.rondaActual = Ronda.iniciar(numeroRonda, modoTest);
         this.indiceJugadorActual = 0;
         this.numeroTurno = 1;
         this.estadoTurno = EstadoTurno.ESPERANDO_ROBAR;

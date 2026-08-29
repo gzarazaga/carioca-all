@@ -16,30 +16,32 @@ public class Ronda {
 
     private final int numero;
     private final RondaConfig config;
+    private final boolean modoTest;
     private final Map<String, List<Formacion>> formacionesPorJugador;
     private final Map<String, Boolean> jugadoresQueBajaron;
     private boolean finalizada;
     private String ganadorId;
 
-    private Ronda(int numero, RondaConfig config) {
+    private Ronda(int numero, RondaConfig config, boolean modoTest) {
         this.numero = numero;
         this.config = config;
+        this.modoTest = modoTest;
         this.formacionesPorJugador = new HashMap<>();
         this.jugadoresQueBajaron = new HashMap<>();
         this.finalizada = false;
         this.ganadorId = null;
     }
 
-    public static Ronda iniciar(int numeroRonda) {
-        RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda);
-        return new Ronda(numeroRonda, config);
+    public static Ronda iniciar(int numeroRonda, boolean modoTest) {
+        RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda, modoTest);
+        return new Ronda(numeroRonda, config, modoTest);
     }
 
-    public static Ronda reconstitute(int numero, RondaConfig config,
+    public static Ronda reconstitute(int numero, RondaConfig config, boolean modoTest,
                                      Map<String, List<Formacion>> formacionesPorJugador,
                                      Map<String, Boolean> jugadoresQueBajaron,
                                      boolean finalizada, String ganadorId) {
-        Ronda ronda = new Ronda(numero, config);
+        Ronda ronda = new Ronda(numero, config, modoTest);
         ronda.formacionesPorJugador.putAll(formacionesPorJugador);
         ronda.jugadoresQueBajaron.putAll(jugadoresQueBajaron);
         ronda.finalizada = finalizada;
@@ -120,6 +122,6 @@ public class Ronda {
     }
 
     public boolean esUltimaRonda() {
-        return numero == RondaConfig.RONDAS_CARIOCA.size();
+        return numero == RondaConfig.obtenerRondas(modoTest).size();
     }
 }

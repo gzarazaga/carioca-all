@@ -34,7 +34,7 @@ public class GestorRondasServiceImpl implements GestorRondasService {
 
     @Override
     public String getDescripcionRonda(int numeroRonda) {
-        RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda);
+        RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda, false);
         return config.getDescripcion();
     }
 }

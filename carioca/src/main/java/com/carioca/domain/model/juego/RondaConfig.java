@@ -30,13 +30,30 @@ public class RondaConfig {
     );
 
     /**
+     * Configuración reducida para partidas de prueba: solo 2 rondas simples.
+     * Se activa cuando quien crea la partida usa un nombre que empieza con "test".
+     */
+    public static final List<RondaConfig> RONDAS_TEST = List.of(
+            new RondaConfig(1, 1, 0, "1 Pierna (Test)"),
+            new RondaConfig(2, 1, 0, "1 Pierna Final (Test)")
+    );
+
+    /**
+     * Obtiene la lista de rondas a usar según el modo de la partida.
+     */
+    public static List<RondaConfig> obtenerRondas(boolean modoTest) {
+        return modoTest ? RONDAS_TEST : RONDAS_CARIOCA;
+    }
+
+    /**
      * Obtiene la configuración de una ronda específica.
      */
-    public static RondaConfig obtenerConfiguracion(int numeroRonda) {
-        if (numeroRonda < 1 || numeroRonda > RONDAS_CARIOCA.size()) {
+    public static RondaConfig obtenerConfiguracion(int numeroRonda, boolean modoTest) {
+        List<RondaConfig> rondas = obtenerRondas(modoTest);
+        if (numeroRonda < 1 || numeroRonda > rondas.size()) {
             throw new IllegalArgumentException("Número de ronda inválido: " + numeroRonda);
         }
-        return RONDAS_CARIOCA.get(numeroRonda - 1);
+        return rondas.get(numeroRonda - 1);
     }
 
     /**
