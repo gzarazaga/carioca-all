@@ -213,6 +213,28 @@ class PartidaRepartoCartasTest {
 
             assertEquals(108, enManos + enMazo + enDescarte);
         }
+
+        @Test
+        @DisplayName("el mazo se repone entre rondas: 6 jugadores llegan a la ronda 7 sin quedarse sin cartas")
+        void elMazoSeReponeEntreRondasConSeisJugadores() {
+            // Rondas 6 y 7 con 6 jugadores necesitan 72 + 78 = 150 cartas: más que las
+            // 108 del mazo. Solo funciona si cada ronda repone el mazo completo.
+            Jugador j1 = Jugador.crear("J1");
+            Partida partida = Partida.crear(j1);
+            for (int i = 2; i <= 6; i++) {
+                partida.agregarJugador(Jugador.crear("J" + i));
+            }
+
+            partida.iniciarRonda(6);
+            for (Jugador jugador : partida.getJugadores()) {
+                assertEquals(12, jugador.cantidadCartasEnMano());
+            }
+
+            partida.iniciarRonda(7);
+            for (Jugador jugador : partida.getJugadores()) {
+                assertEquals(13, jugador.cantidadCartasEnMano());
+            }
+        }
     }
 
     // -------------------------------------------------------------------------

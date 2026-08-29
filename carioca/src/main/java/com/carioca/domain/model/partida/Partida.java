@@ -155,14 +155,11 @@ public class Partida {
         this.numeroTurno = 1;
         this.estadoTurno = EstadoTurno.ESPERANDO_ROBAR;
 
-        if (modoTest) {
-            // Cada ronda del modo test repone el mazo entero, para garantizar ases
-            // suficientes sin depender de lo repartido/descartado en la ronda anterior
-            mazo.reponerCompleto();
-            pilaDescarte.vaciar();
-        }
-
-        // Preparar el mazo
+        // Cada ronda arranca con un mazo completo nuevo: se juntan y rebarajan todas
+        // las cartas (como en el Carioca real), en vez de seguir tirando del mazo
+        // compartido de la ronda anterior hasta agotarlo.
+        mazo.reponerCompleto();
+        pilaDescarte.vaciar();
         mazo.barajar();
 
         // Repartir cartas a cada jugador
