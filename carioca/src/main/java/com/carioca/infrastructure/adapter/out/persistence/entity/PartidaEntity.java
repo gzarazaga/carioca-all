@@ -4,6 +4,7 @@ import com.carioca.domain.model.partida.EstadoPartida;
 import com.carioca.domain.model.partida.EstadoTurno;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ public class PartidaEntity {
     private String ganadorId;
 
     @Column(name = "modo_test", nullable = false)
+    @ColumnDefault("false")
     private boolean modoTest;
 
     @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
