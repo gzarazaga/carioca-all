@@ -1,5 +1,6 @@
 package com.carioca.domain.model.partida;
 
+import com.carioca.domain.model.juego.Valor;
 import com.carioca.domain.model.jugador.Jugador;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -246,6 +247,26 @@ class PartidaRepartoCartasTest {
 
             assertEquals(8, j1.cantidadCartasEnMano());
             assertEquals(8, j2.cantidadCartasEnMano());
+        }
+
+        @ParameterizedTest(name = "ronda {0}: cada jugador recibe una pierna de ases")
+        @CsvSource({"1", "2"})
+        @DisplayName("cada jugador arranca con 3 ases (una pierna válida) en su mano")
+        void cadaJugadorRecibeTresAses(int ronda) {
+            Jugador j1 = Jugador.crear("Test J1");
+            Jugador j2 = Jugador.crear("J2");
+            Partida partida = Partida.crear(j1);
+            partida.agregarJugador(j2);
+
+            partida.iniciarRonda(ronda);
+
+            for (Jugador jugador : partida.getJugadores()) {
+                long ases = jugador.getMano().getCartas().stream()
+                        .filter(c -> c.getValor() == Valor.AS)
+                        .count();
+                assertEquals(3, ases,
+                        "El jugador " + jugador.getNombre() + " debe tener 3 ases en modo test");
+            }
         }
     }
 }

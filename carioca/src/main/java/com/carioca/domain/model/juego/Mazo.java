@@ -79,6 +79,24 @@ public class Mazo {
     }
 
     /**
+     * Extrae del mazo hasta {@code cantidad} cartas de un valor específico
+     * (sin importar su posición). Devuelve menos si no hay suficientes disponibles.
+     * Pensado para el modo test, donde se garantiza a cada jugador una pierna inicial.
+     */
+    public List<Carta> robarPorValor(Valor valor, int cantidad) {
+        List<Carta> robadas = new ArrayList<>();
+        var iterador = cartas.iterator();
+        while (iterador.hasNext() && robadas.size() < cantidad) {
+            Carta carta = iterador.next();
+            if (carta.getValor() == valor) {
+                robadas.add(carta);
+                iterador.remove();
+            }
+        }
+        return robadas;
+    }
+
+    /**
      * Añade cartas al fondo del mazo (para reciclar el descarte).
      */
     public void agregarAlFondo(List<Carta> nuevasCartas) {

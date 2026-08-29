@@ -24,6 +24,7 @@ public class Partida {
     public static final int MAXIMO_JUGADORES = 6;
     public static final int CARTAS_INICIALES = 7;
     public static final int CARTAS_INICIALES_TEST = 4;
+    public static final int ASES_PIERNA_TEST = 3;
 
     private final PartidaId id;
     private final List<Jugador> jugadores;
@@ -161,7 +162,12 @@ public class Partida {
         int cartasARepartir = modoTest ? CARTAS_INICIALES_TEST : CARTAS_INICIALES + (numeroRonda - 1);
         for (Jugador jugador : jugadores) {
             jugador.prepararNuevaRonda();
-            List<Carta> cartasIniciales = mazo.robar(cartasARepartir);
+            List<Carta> cartasIniciales = new ArrayList<>();
+            if (modoTest) {
+                // Cada jugador arranca con una pierna de ases lista para bajar
+                cartasIniciales.addAll(mazo.robarPorValor(Valor.AS, ASES_PIERNA_TEST));
+            }
+            cartasIniciales.addAll(mazo.robar(cartasARepartir - cartasIniciales.size()));
             jugador.recibirCartas(cartasIniciales);
         }
 
