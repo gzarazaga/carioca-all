@@ -23,6 +23,7 @@ public class Partida {
     public static final int MINIMO_JUGADORES = 2;
     public static final int MAXIMO_JUGADORES = 6;
     public static final int CARTAS_INICIALES = 7;
+    public static final int CARTAS_INICIALES_TEST = 4;
 
     private final PartidaId id;
     private final List<Jugador> jugadores;
@@ -157,7 +158,7 @@ public class Partida {
         mazo.barajar();
 
         // Repartir cartas a cada jugador
-        int cartasARepartir = CARTAS_INICIALES + (numeroRonda - 1);
+        int cartasARepartir = modoTest ? CARTAS_INICIALES_TEST : CARTAS_INICIALES + (numeroRonda - 1);
         for (Jugador jugador : jugadores) {
             jugador.prepararNuevaRonda();
             List<Carta> cartasIniciales = mazo.robar(cartasARepartir);
