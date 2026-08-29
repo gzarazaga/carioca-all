@@ -27,6 +27,7 @@ public class EstadoJuegoResponse {
     private Instant fechaCreacion;
     private Instant fechaInicio;
     private String ganadorId;
+    private boolean modoTest;
 
     @Data
     @Builder

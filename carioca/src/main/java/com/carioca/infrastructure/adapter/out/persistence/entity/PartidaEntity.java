@@ -57,6 +57,9 @@ public class PartidaEntity {
     @Column(name = "ganador_id", length = 36)
     private String ganadorId;
 
+    @Column(name = "modo_test", nullable = false)
+    private boolean modoTest;
+
     @OneToMany(mappedBy = "partida", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     private List<JugadorEntity> jugadores = new ArrayList<>();

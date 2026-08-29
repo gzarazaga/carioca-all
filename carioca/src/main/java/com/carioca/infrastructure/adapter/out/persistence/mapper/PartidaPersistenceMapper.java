@@ -45,6 +45,7 @@ public class PartidaPersistenceMapper {
                 .fechaInicio(partida.getFechaInicio())
                 .fechaFin(partida.getFechaFin())
                 .ganadorId(partida.getGanadorId())
+                .modoTest(partida.isModoTest())
                 .mazoJson(serializeCartas(partida.getMazo().getCartas()))
                 .descarteJson(serializeCartas(partida.getPilaDescarte().getCartas()))
                 .rondaJson(serializeRonda(partida.getRondaActual()))
@@ -73,7 +74,7 @@ public class PartidaPersistenceMapper {
         List<Jugador> jugadores = jugadorMapper.toDomainList(jugadoresOrdenados);
         List<Carta> cartasMazo = deserializeCartas(entity.getMazoJson());
         List<Carta> cartasDescarte = deserializeCartas(entity.getDescarteJson());
-        Ronda ronda = deserializeRonda(entity.getRondaJson(), entity.getNumeroRonda());
+        Ronda ronda = deserializeRonda(entity.getRondaJson(), entity.getNumeroRonda(), entity.isModoTest());
         List<Movimiento> historial = deserializeHistorial(entity.getHistorialJson());
 
         Mazo mazo = Mazo.reconstitute(cartasMazo);
@@ -104,7 +105,8 @@ public class PartidaPersistenceMapper {
                 entity.getFechaCreacion(),
                 entity.getFechaInicio(),
                 entity.getFechaFin(),
-                entity.getGanadorId()
+                entity.getGanadorId(),
+                entity.isModoTest()
         );
     }
 
@@ -161,14 +163,14 @@ public class PartidaPersistenceMapper {
         }
     }
 
-    private Ronda deserializeRonda(String json, int numeroRonda) {
+    private Ronda deserializeRonda(String json, int numeroRonda, boolean modoTest) {
         if (json == null || json.isEmpty() || numeroRonda == 0) {
             return null;
         }
         try {
             Map<String, Object> rondaMap = objectMapper.readValue(json, new TypeReference<>() {});
 
-            RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda);
+            RondaConfig config = RondaConfig.obtenerConfiguracion(numeroRonda, modoTest);
             boolean finalizada = (boolean) rondaMap.get("finalizada");
             String ganadorId = (String) rondaMap.get("ganadorId");
 
@@ -193,6 +195,7 @@ public class PartidaPersistenceMapper {
             return Ronda.reconstitute(
                     numeroRonda,
                     config,
+                    modoTest,
                     formacionesPorJugador,
                     jugadoresQueBajaron,
                     finalizada,
