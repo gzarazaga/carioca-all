@@ -210,4 +210,42 @@ class PartidaRepartoCartasTest {
             assertEquals(108, enManos + enMazo + enDescarte);
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Reparto en modo test
+    // -------------------------------------------------------------------------
+
+    @Nested
+    @DisplayName("Reparto en modo test")
+    class RepartoModoTest {
+
+        @ParameterizedTest(name = "ronda {0} en modo test → 4 cartas por jugador")
+        @CsvSource({"1", "2"})
+        @DisplayName("ambas rondas del modo test reparten 4 cartas a cada jugador")
+        void modoTestRepartCuatroCartas(int ronda) {
+            Jugador j1 = Jugador.crear("Test J1");
+            Jugador j2 = Jugador.crear("J2");
+            Partida partida = Partida.crear(j1);
+            partida.agregarJugador(j2);
+
+            partida.iniciarRonda(ronda);
+
+            assertEquals(4, j1.cantidadCartasEnMano());
+            assertEquals(4, j2.cantidadCartasEnMano());
+        }
+
+        @Test
+        @DisplayName("una partida normal (sin nombre 'test') sigue repartiendo por la fórmula habitual")
+        void partidaNormalNoSeVeAfectada() {
+            Jugador j1 = Jugador.crear("J1");
+            Jugador j2 = Jugador.crear("J2");
+            Partida partida = Partida.crear(j1);
+            partida.agregarJugador(j2);
+
+            partida.iniciarRonda(2);
+
+            assertEquals(8, j1.cantidadCartasEnMano());
+            assertEquals(8, j2.cantidadCartasEnMano());
+        }
+    }
 }
