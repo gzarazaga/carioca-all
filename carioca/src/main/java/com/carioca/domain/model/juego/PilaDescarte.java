@@ -68,6 +68,14 @@ public class PilaDescarte {
         return recogidas;
     }
 
+    /**
+     * Vacía la pila por completo. Pensado para el modo test, que repone el mazo
+     * entero en cada ronda y no debe arrastrar el descarte de la ronda anterior.
+     */
+    public void vaciar() {
+        cartas.clear();
+    }
+
     public boolean estaVacia() {
         return cartas.isEmpty();
     }

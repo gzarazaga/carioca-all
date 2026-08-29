@@ -1,5 +1,6 @@
 package com.carioca.domain.model.partida;
 
+import com.carioca.domain.model.juego.Carta;
 import com.carioca.domain.model.juego.Valor;
 import com.carioca.domain.model.jugador.Jugador;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -266,6 +269,31 @@ class PartidaRepartoCartasTest {
                         .count();
                 assertEquals(3, ases,
                         "El jugador " + jugador.getNombre() + " debe tener 3 ases en modo test");
+            }
+        }
+
+        @Test
+        @DisplayName("la ronda 2 también da 3 ases de palos distintos aunque ya se haya jugado la ronda 1")
+        void ronda2RepartTresAsesAunqueRonda1YaLosHayaUsado() {
+            Jugador j1 = Jugador.crear("Test J1");
+            Jugador j2 = Jugador.crear("J2");
+            Partida partida = Partida.crear(j1);
+            partida.agregarJugador(j2);
+
+            // Simula la progresión real: la ronda 1 ya consumió ases del mazo compartido
+            partida.iniciarRonda(1);
+            // La ronda 2 debe seguir dando 3 ases de palos distintos a cada jugador,
+            // sin depender de lo que haya quedado disponible tras la ronda 1
+            partida.iniciarRonda(2);
+
+            for (Jugador jugador : partida.getJugadores()) {
+                List<Carta> ases = jugador.getMano().getCartas().stream()
+                        .filter(c -> c.getValor() == Valor.AS)
+                        .toList();
+                assertEquals(3, ases.size(),
+                        "El jugador " + jugador.getNombre() + " debe tener 3 ases en la ronda 2");
+                long palosDistintos = ases.stream().map(Carta::getPalo).distinct().count();
+                assertEquals(3, palosDistintos, "Los 3 ases deben ser de palos distintos");
             }
         }
     }

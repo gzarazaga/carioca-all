@@ -155,6 +155,13 @@ public class Partida {
         this.numeroTurno = 1;
         this.estadoTurno = EstadoTurno.ESPERANDO_ROBAR;
 
+        if (modoTest) {
+            // Cada ronda del modo test repone el mazo entero, para garantizar ases
+            // suficientes sin depender de lo repartido/descartado en la ronda anterior
+            mazo.reponerCompleto();
+            pilaDescarte.vaciar();
+        }
+
         // Preparar el mazo
         mazo.barajar();
 
