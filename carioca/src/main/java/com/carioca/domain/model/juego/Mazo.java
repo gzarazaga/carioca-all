@@ -26,6 +26,21 @@ public class Mazo {
      * Crea un mazo completo para Carioca (2 mazos + 4 comodines).
      */
     public static Mazo crearMazoCompleto() {
+        return new Mazo(generarCartasCompletas());
+    }
+
+    /**
+     * Repone el mazo con un juego completo de cartas nuevas (2 mazos + 4 comodines),
+     * descartando lo que hubiera. Pensado para el modo test, que reinicia el mazo en
+     * cada ronda para garantizar cartas suficientes (p.ej. ases) sin depender de lo
+     * que haya quedado repartido o descartado en la ronda anterior.
+     */
+    public void reponerCompleto() {
+        cartas.clear();
+        cartas.addAll(generarCartasCompletas());
+    }
+
+    private static List<Carta> generarCartasCompletas() {
         List<Carta> cartas = new ArrayList<>();
 
         // Crear 2 mazos completos
@@ -42,7 +57,7 @@ public class Mazo {
             cartas.add(Carta.crearComodin());
         }
 
-        return new Mazo(cartas);
+        return cartas;
     }
 
     /**
