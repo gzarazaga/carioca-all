@@ -165,7 +165,7 @@ public class Partida {
             List<Carta> cartasIniciales = new ArrayList<>();
             if (modoTest) {
                 // Cada jugador arranca con una pierna de ases lista para bajar
-                cartasIniciales.addAll(mazo.robarPorValor(Valor.AS, ASES_PIERNA_TEST));
+                cartasIniciales.addAll(mazo.robarPorValorConPalosDistintos(Valor.AS, ASES_PIERNA_TEST));
             }
             cartasIniciales.addAll(mazo.robar(cartasARepartir - cartasIniciales.size()));
             jugador.recibirCartas(cartasIniciales);

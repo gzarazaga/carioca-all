@@ -4,8 +4,10 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Representa el mazo de cartas del juego.
@@ -79,16 +81,19 @@ public class Mazo {
     }
 
     /**
-     * Extrae del mazo hasta {@code cantidad} cartas de un valor específico
-     * (sin importar su posición). Devuelve menos si no hay suficientes disponibles.
+     * Extrae del mazo hasta {@code cantidad} cartas de un valor específico, de palos
+     * distintos entre sí (sin importar su posición en el mazo). Devuelve menos cartas
+     * si no hay suficientes palos disponibles para ese valor. Al garantizar palos
+     * distintos, el resultado siempre forma una pierna válida.
      * Pensado para el modo test, donde se garantiza a cada jugador una pierna inicial.
      */
-    public List<Carta> robarPorValor(Valor valor, int cantidad) {
+    public List<Carta> robarPorValorConPalosDistintos(Valor valor, int cantidad) {
         List<Carta> robadas = new ArrayList<>();
+        Set<Palo> palosUsados = new HashSet<>();
         var iterador = cartas.iterator();
         while (iterador.hasNext() && robadas.size() < cantidad) {
             Carta carta = iterador.next();
-            if (carta.getValor() == valor) {
+            if (carta.getValor() == valor && palosUsados.add(carta.getPalo())) {
                 robadas.add(carta);
                 iterador.remove();
             }

@@ -121,6 +121,56 @@ class MazoTest {
     }
 
     @Nested
+    @DisplayName("Robar por valor con palos distintos")
+    class RobarPorValorConPalosDistintos {
+
+        @Test
+        @DisplayName("debe robar la cantidad pedida con palos distintos entre sí")
+        void debeRobarConPalosDistintos() {
+            List<Carta> ases = mazo.robarPorValorConPalosDistintos(Valor.AS, 3);
+
+            assertEquals(3, ases.size());
+            long palosDistintos = ases.stream().map(Carta::getPalo).distinct().count();
+            assertEquals(3, palosDistintos);
+            assertTrue(ases.stream().allMatch(c -> c.getValor() == Valor.AS));
+        }
+
+        @Test
+        @DisplayName("las cartas robadas ya no están en el mazo")
+        void lasCartasRobadasSalenDelMazo() {
+            int cantidadInicial = mazo.cantidadCartas();
+
+            List<Carta> ases = mazo.robarPorValorConPalosDistintos(Valor.AS, 3);
+
+            assertEquals(cantidadInicial - 3, mazo.cantidadCartas());
+            long asesRestantes = mazo.getCartas().stream()
+                    .filter(c -> c.getValor() == Valor.AS)
+                    .count();
+            assertEquals(8 - 3, asesRestantes);
+        }
+
+        @Test
+        @DisplayName("devuelve como máximo una carta por palo aunque se pidan más que palos existen")
+        void noRepitePaloAunquePidaMas() {
+            List<Carta> ases = mazo.robarPorValorConPalosDistintos(Valor.AS, 10);
+
+            // Solo hay 4 palos posibles para el AS
+            assertEquals(4, ases.size());
+        }
+
+        @Test
+        @DisplayName("devuelve vacío si ya no quedan ases en el mazo (ambas copias)")
+        void devuelveVacioSiNoQuedanAses() {
+            mazo.robarPorValorConPalosDistintos(Valor.AS, 4); // 1era copia de cada palo
+            mazo.robarPorValorConPalosDistintos(Valor.AS, 4); // 2da copia de cada palo
+
+            List<Carta> ases = mazo.robarPorValorConPalosDistintos(Valor.AS, 3);
+
+            assertTrue(ases.isEmpty());
+        }
+    }
+
+    @Nested
     @DisplayName("Agregar cartas al fondo")
     class AgregarAlFondo {
 

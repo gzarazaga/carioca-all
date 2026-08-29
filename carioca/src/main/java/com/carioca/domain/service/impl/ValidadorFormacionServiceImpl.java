@@ -13,13 +13,21 @@ public class ValidadorFormacionServiceImpl implements ValidadorFormacionService 
 
     private static final int MINIMO_CARTAS = 3;
 
+    /**
+     * A partir de esta cantidad de cartas, una pierna puede repetir palo
+     * (con menos, al haber un único mazo de 4 palos, todos deben ser distintos).
+     */
+    private static final int MINIMO_CARTAS_PARA_REPETIR_PALO = 4;
+
     @Override
     public boolean esPiernaValida(List<Carta> cartas) {
         if (cartas.size() < MINIMO_CARTAS) {
             return false;
         }
 
+        boolean permitePaloRepetido = cartas.size() >= MINIMO_CARTAS_PARA_REPETIR_PALO;
         Valor valorBase = null;
+        List<Palo> palosVistos = new ArrayList<>();
         for (Carta carta : cartas) {
             if (!carta.esComodin()) {
                 if (valorBase == null) {
@@ -27,6 +35,11 @@ public class ValidadorFormacionServiceImpl implements ValidadorFormacionService 
                 } else if (carta.getValor() != valorBase) {
                     return false;
                 }
+
+                if (!permitePaloRepetido && palosVistos.contains(carta.getPalo())) {
+                    return false;
+                }
+                palosVistos.add(carta.getPalo());
             }
         }
 
