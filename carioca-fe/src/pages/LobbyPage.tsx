@@ -7,6 +7,7 @@ import { loadSession } from '../utils/storage'
 import PlayerList from '../components/lobby/PlayerList'
 import GameCode from '../components/lobby/GameCode'
 import Button from '../components/common/Button'
+import AdUnit from '../components/common/AdUnit'
 
 export default function LobbyPage() {
   const { id } = useParams<{ id: string }>()
@@ -92,6 +93,8 @@ export default function LobbyPage() {
         <Button onClick={() => navigate('/')} variant="neutral" size="md" bold={false} className="w-full">
           Volver al inicio
         </Button>
+
+        <AdUnit slot="0000000001" />
       </div>
     </div>
   )

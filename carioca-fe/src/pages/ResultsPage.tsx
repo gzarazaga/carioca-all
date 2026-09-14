@@ -6,6 +6,7 @@ import { clearSession, loadSession } from '../utils/storage'
 import Scoreboard from '../components/common/Scoreboard'
 import Button from '../components/common/Button'
 import { TrophyIcon, SparkIcon } from '../components/common/icons'
+import AdUnit from '../components/common/AdUnit'
 
 export default function ResultsPage() {
   const { id } = useParams<{ id: string }>()
@@ -73,6 +74,8 @@ export default function ResultsPage() {
         <Button onClick={handleNewGame} variant="primary" size="lg" className="w-full">
           Nueva partida
         </Button>
+
+        <AdUnit slot="0000000002" />
       </div>
     </div>
   )
