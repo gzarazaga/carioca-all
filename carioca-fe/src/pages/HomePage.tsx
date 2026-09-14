@@ -5,6 +5,7 @@ import { useGameStore } from '../stores/gameStore'
 import { saveSession, loadSession, clearSession } from '../utils/storage'
 import Button from '../components/common/Button'
 import CardBackground from '../components/common/CardBackground'
+import AdUnit from '../components/common/AdUnit'
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -82,7 +83,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-felt-900 flex flex-col items-center justify-center gap-6 p-4 relative overflow-hidden">
       <div
         className="absolute -top-56 -left-40 w-[620px] h-[620px] rounded-full opacity-40 blur-3xl pointer-events-none"
         style={{ background: 'radial-gradient(circle, var(--color-primary-600) 0%, transparent 70%)' }}
@@ -159,6 +160,10 @@ export default function HomePage() {
             Unirse
           </Button>
         </div>
+      </div>
+
+      <div className="max-w-md w-full relative z-10">
+        <AdUnit slot="7885137481" />
       </div>
     </div>
   )
