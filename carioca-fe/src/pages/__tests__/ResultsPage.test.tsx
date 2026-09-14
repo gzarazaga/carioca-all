@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { render } from '@testing-library/react'
@@ -90,8 +90,9 @@ describe('ResultsPage', () => {
   it('renders Scoreboard with all players', () => {
     renderResultsPage()
     expect(screen.getByText('Tabla de puntos')).toBeInTheDocument()
-    expect(screen.getByText('Carlos')).toBeInTheDocument()
-    expect(screen.getByText('Ana')).toBeInTheDocument()
+    const table = screen.getByRole('table')
+    expect(within(table).getByText('Carlos')).toBeInTheDocument()
+    expect(within(table).getByText('Ana')).toBeInTheDocument()
   })
 
   it('shows points for all players in scoreboard', () => {

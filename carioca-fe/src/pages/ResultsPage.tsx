@@ -5,6 +5,7 @@ import * as api from '../services/api'
 import { clearSession, loadSession } from '../utils/storage'
 import Scoreboard from '../components/common/Scoreboard'
 import Button from '../components/common/Button'
+import { TrophyIcon, SparkIcon } from '../components/common/icons'
 
 export default function ResultsPage() {
   const { id } = useParams<{ id: string }>()
@@ -42,10 +43,19 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-6 text-center">
-        <h1 className="text-4xl font-bold">
-          {isWinner ? '🎉 Ganaste!' : '🏆 Fin de la partida'}
+    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4 relative overflow-hidden">
+      <div
+        className="absolute -top-56 -left-40 w-[620px] h-[620px] rounded-full opacity-30 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-primary-600) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute -bottom-60 -right-44 w-[640px] h-[640px] rounded-full opacity-25 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-warning-500) 0%, transparent 70%)' }}
+      />
+      <div className="max-w-md w-full space-y-6 text-center relative z-10">
+        <h1 className="font-display font-extrabold text-3xl flex items-center justify-center gap-2.5 text-warning-400">
+          {isWinner ? <SparkIcon className="w-7 h-7" /> : <TrophyIcon className="w-7 h-7" />}
+          {isWinner ? 'Ganaste!' : 'Fin de la partida'}
         </h1>
 
         {ganador && (

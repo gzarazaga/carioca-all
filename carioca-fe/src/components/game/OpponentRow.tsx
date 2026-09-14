@@ -12,11 +12,11 @@ export default function OpponentRow() {
         return (
           <div
             key={opp.id}
-            className={`flex flex-col items-center gap-1 p-2 rounded-lg ${
-              isCurrent ? 'ring-2 ring-warning-400 bg-felt-800/60' : ''
+            className={`flex flex-col items-center gap-1.5 px-4 py-2.5 rounded-xl glass-panel ${
+              isCurrent ? 'ring-2 ring-warning-400' : ''
             }`}
           >
-            <div className="text-sm font-bold">
+            <div className="text-sm font-semibold">
               {opp.nombre}
               {!opp.conectado && <span className="text-danger-400 ml-1">(offline)</span>}
             </div>

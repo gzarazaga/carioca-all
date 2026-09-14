@@ -39,33 +39,29 @@ describe('Scoreboard', () => {
     expect(rows[2]).toHaveTextContent('3')
   })
 
-  it('highlights winner with trophy emoji', () => {
+  it('highlights winner with a trophy icon', () => {
     render(<Scoreboard jugadores={jugadores} ganadorId="p2" />)
 
-    // Bob is the winner
-    expect(screen.getByText(/Bob/)).toBeInTheDocument()
-    // The cell should contain the trophy emoji
-    const bobCell = screen.getByText((content, element) => {
-      return element?.tagName === 'TD' && content.includes('Bob') && content.includes('🏆')
-    })
-    expect(bobCell).toBeInTheDocument()
+    // Bob is the winner — the trophy icon sits in his row
+    const bobRow = screen.getByText('Bob').closest('tr')
+    expect(bobRow?.querySelector('[aria-label="Ganador"]')).toBeInTheDocument()
   })
 
   it('does not show trophy when no winner specified', () => {
     const { container } = render(<Scoreboard jugadores={jugadores} />)
 
-    expect(container.textContent).not.toContain('🏆')
+    expect(container.querySelector('[aria-label="Ganador"]')).not.toBeInTheDocument()
   })
 
   it('does not show trophy for non-winner players', () => {
     render(<Scoreboard jugadores={jugadores} ganadorId="p2" />)
 
-    // Alice and Carlos rows should not have trophy
+    // Alice and Carlos rows should not have the trophy icon
     const aliceRow = screen.getByText('Alice').closest('tr')
-    expect(aliceRow?.textContent).not.toContain('🏆')
+    expect(aliceRow?.querySelector('[aria-label="Ganador"]')).not.toBeInTheDocument()
 
     const carlosRow = screen.getByText('Carlos').closest('tr')
-    expect(carlosRow?.textContent).not.toContain('🏆')
+    expect(carlosRow?.querySelector('[aria-label="Ganador"]')).not.toBeInTheDocument()
   })
 
   it('renders table header', () => {

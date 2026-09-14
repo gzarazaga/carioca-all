@@ -10,6 +10,7 @@ import FormationBuilder from '../components/actions/FormationBuilder'
 import PegarDialog from '../components/actions/PegarDialog'
 import Scoreboard from '../components/common/Scoreboard'
 import Button from '../components/common/Button'
+import { TrophyIcon } from '../components/common/icons'
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -50,17 +51,27 @@ export default function GamePage() {
   }, [estado?.estado, gameEndInfo, id, navigate])
 
   return (
-    <div className="min-h-screen bg-felt-900 relative">
-      <GameBoard />
-      <ActionBar />
+    <div className="min-h-screen bg-felt-900 relative overflow-hidden">
+      <div
+        className="absolute -top-56 -left-40 w-[620px] h-[620px] rounded-full opacity-25 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-primary-600) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute -bottom-60 -right-44 w-[640px] h-[640px] rounded-full opacity-20 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-success-600) 0%, transparent 70%)' }}
+      />
+      <div className="relative z-10">
+        <GameBoard />
+        <ActionBar />
+      </div>
       <FormationBuilder />
       <PegarDialog />
 
       {/* Round end overlay */}
       {roundEndInfo && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-felt-900 border border-felt-600 rounded-xl p-6 max-w-md w-full text-center">
-            <h2 className="text-2xl font-bold mb-4">Ronda terminada!</h2>
+          <div className="glass-panel bg-felt-900/95 rounded-2xl p-6 max-w-md w-full text-center shadow-2xl">
+            <h2 className="font-display font-semibold text-xl mb-4">Ronda terminada!</h2>
             {estado && (
               <Scoreboard jugadores={estado.jugadores} ganadorId={roundEndInfo.ganadorId} />
             )}
@@ -74,9 +85,12 @@ export default function GamePage() {
       {/* Game end overlay */}
       {gameEndInfo && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-felt-900 border border-warning-500 rounded-xl p-6 max-w-md w-full text-center">
-            <h2 className="text-3xl font-bold mb-2">🏆 Partida terminada!</h2>
-            <p className="text-felt-300 mb-4">Redirigiendo a resultados...</p>
+          <div className="glass-panel bg-felt-900/95 rounded-2xl p-6 max-w-md w-full text-center shadow-2xl ring-1 ring-warning-500/50">
+            <h2 className="font-display font-bold text-2xl mb-2 flex items-center justify-center gap-2 text-warning-400">
+              <TrophyIcon className="w-7 h-7" />
+              Partida terminada!
+            </h2>
+            <p className="text-felt-300 mb-4 text-sm">Redirigiendo a resultados...</p>
             {estado && (
               <Scoreboard jugadores={estado.jugadores} ganadorId={gameEndInfo.ganadorId} />
             )}

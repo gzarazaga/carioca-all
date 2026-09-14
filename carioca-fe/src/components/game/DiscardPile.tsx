@@ -15,9 +15,9 @@ export default function DiscardPile() {
     <button
       onClick={() => canDraw && robar(false)}
       disabled={!canDraw}
-      className={`flex flex-col items-center gap-1 p-2 rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 ${
+      className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 ${
         canDraw
-          ? 'hover:bg-felt-700/50 cursor-pointer ring-2 ring-warning-400/60'
+          ? 'hover:bg-felt-700/50 cursor-pointer ring-2 ring-warning-400/60 pulse-amber'
           : 'cursor-default'
       }`}
     >

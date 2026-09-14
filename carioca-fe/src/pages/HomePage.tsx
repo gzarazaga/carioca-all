@@ -83,11 +83,23 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4 relative overflow-hidden">
+      <div
+        className="absolute -top-56 -left-40 w-[620px] h-[620px] rounded-full opacity-40 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-primary-600) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute -bottom-60 -right-44 w-[640px] h-[640px] rounded-full opacity-30 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-success-600) 0%, transparent 70%)' }}
+      />
       <CardBackground />
-      <div className="max-w-md w-full space-y-6 relative z-10">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold mb-2">🃏 Carioca</h1>
-          <p className="text-felt-300">Juego de cartas para 2-6 jugadores</p>
+      <div className="max-w-md w-full glass-panel rounded-2xl p-10 space-y-6 relative z-10 shadow-2xl">
+        <div className="text-center flex flex-col items-center gap-2">
+          <svg width="38" height="38" viewBox="0 0 38 38" className="mb-1">
+            <rect x="3" y="1" width="24" height="34" rx="5" fill="none" stroke="var(--color-pink-500)" strokeWidth="1.6" transform="rotate(-10 15 18)" />
+            <rect x="9" y="3" width="24" height="34" rx="5" fill="var(--color-felt-900)" stroke="var(--color-success-600)" strokeWidth="1.6" />
+          </svg>
+          <h1 className="font-display font-extrabold text-4xl neon-text">Carioca</h1>
+          <p className="text-felt-300 text-sm">Juego de cartas para 2-6 jugadores</p>
         </div>
 
         {/* Rejoin banner */}
@@ -113,13 +125,13 @@ export default function HomePage() {
 
         {/* Name input */}
         <div>
-          <label className="block text-sm text-felt-300 mb-1">Tu nombre</label>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-felt-300 mb-2">Tu nombre</label>
           <input
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             placeholder="Ingresa tu nombre"
             maxLength={50}
-            className="w-full px-4 py-3 bg-felt-800 border border-felt-600 rounded-lg text-white placeholder:text-felt-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="w-full px-4 py-3.5 bg-felt-800/80 border border-felt-600 rounded-xl text-white placeholder:text-felt-500 focus:outline-none focus:ring-2 focus:ring-success-500 focus:border-success-500"
           />
         </div>
 
@@ -131,7 +143,7 @@ export default function HomePage() {
         {/* Divider */}
         <div className="flex items-center gap-4">
           <div className="flex-1 h-px bg-felt-600" />
-          <span className="text-felt-400 text-sm">o unirse a una</span>
+          <span className="text-felt-400 text-xs uppercase tracking-wider">o unirse a una</span>
           <div className="flex-1 h-px bg-felt-600" />
         </div>
 
@@ -141,7 +153,7 @@ export default function HomePage() {
             value={codigo}
             onChange={(e) => setCodigo(e.target.value)}
             placeholder="Codigo de partida"
-            className="flex-1 px-4 py-3 bg-felt-800 border border-felt-600 rounded-lg text-white placeholder:text-felt-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="flex-1 px-4 py-3.5 bg-felt-800/80 border border-felt-600 rounded-xl text-white placeholder:text-felt-500 focus:outline-none focus:ring-2 focus:ring-success-500 focus:border-success-500"
           />
           <Button onClick={handleJoin} disabled={loading} variant="success" size="lg">
             Unirse

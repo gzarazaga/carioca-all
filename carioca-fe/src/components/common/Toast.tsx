@@ -1,9 +1,9 @@
 import { useGameStore } from '../../stores/gameStore'
 
 const COLORS = {
-  info: 'bg-primary-600',
-  success: 'bg-success-600',
-  error: 'bg-danger-600',
+  info: 'bg-[oklch(46%_0.2_295)] border border-primary-500/50',
+  success: 'bg-[oklch(42%_0.13_200)] border border-success-500/50',
+  error: 'bg-[oklch(48%_0.2_25)] border border-danger-500/50',
 }
 
 export default function Toast() {
@@ -17,7 +17,7 @@ export default function Toast() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className={`${COLORS[t.type]} px-4 py-2 rounded-lg shadow-lg text-sm font-medium
+          className={`${COLORS[t.type]} backdrop-blur-md px-4 py-2.5 rounded-xl shadow-xl text-sm font-medium
             flex items-center gap-2 animate-[slideIn_0.3s_ease-out]`}
         >
           <span>{t.text}</span>

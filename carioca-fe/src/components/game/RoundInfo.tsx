@@ -5,9 +5,9 @@ export default function RoundInfo() {
   if (!estado) return null
 
   return (
-    <div className="bg-felt-800/80 rounded-lg px-4 py-2 text-center">
-      <div className="text-sm text-felt-300">Ronda {estado.numeroRonda} / 7</div>
-      <div className="text-lg font-bold">{estado.descripcionRonda}</div>
+    <div className="glass-panel rounded-xl px-5 py-2.5 text-center">
+      <div className="text-[11px] uppercase tracking-wider text-felt-300">Ronda {estado.numeroRonda} / 7</div>
+      <div className="font-display font-semibold text-sm mt-0.5">{estado.descripcionRonda}</div>
     </div>
   )
 }

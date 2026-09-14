@@ -60,14 +60,12 @@ describe('Card', () => {
     expect(cardDiv.className).toContain('text-sm')
   })
 
-  it('renders joker (COMODIN) correctly with joker emoji', () => {
+  it('renders joker (COMODIN) as a spark icon', () => {
     const carta = createCarta({ valor: 'COMODIN', palo: null })
     render(<Card carta={carta} />)
 
-    // COMODIN maps to '★' for value display
-    expect(screen.getAllByText('★')).toHaveLength(2) // top and bottom
-    // Joker shows 🃏 instead of suit symbol
-    expect(screen.getByText('🃏')).toBeInTheDocument()
+    // El comodín reemplaza el rango/palo por un icono (sin emoji)
+    expect(screen.getByRole('img', { name: 'Comodin' })).toBeInTheDocument()
   })
 
   it('renders hearts as red', () => {
