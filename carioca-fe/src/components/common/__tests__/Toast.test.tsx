@@ -42,7 +42,7 @@ describe('Toast', () => {
 
     render(<Toast />)
     const toast = screen.getByText('Info toast').closest('div[class*="bg-"]')
-    expect(toast?.className).toContain('bg-primary-600')
+    expect(toast?.className).toContain('border-primary-500/50')
   })
 
   it('shows success style for success type', () => {
@@ -52,7 +52,7 @@ describe('Toast', () => {
 
     render(<Toast />)
     const toast = screen.getByText('Success toast').closest('div[class*="bg-"]')
-    expect(toast?.className).toContain('bg-success-600')
+    expect(toast?.className).toContain('border-success-500/50')
   })
 
   it('shows error style for error type', () => {
@@ -62,7 +62,7 @@ describe('Toast', () => {
 
     render(<Toast />)
     const toast = screen.getByText('Error toast').closest('div[class*="bg-"]')
-    expect(toast?.className).toContain('bg-danger-600')
+    expect(toast?.className).toContain('border-danger-500/50')
   })
 
   it('close button removes the toast', () => {

@@ -19,9 +19,9 @@ export default function PegarDialog() {
   if (!carta) return null
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-felt-900 border border-felt-600 rounded-xl p-6 max-w-lg w-full">
-        <h2 className="text-xl font-bold mb-4">Pegar carta a formacion</h2>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="glass-panel bg-felt-900/95 rounded-2xl p-6 max-w-lg w-full shadow-2xl">
+        <h2 className="font-display font-semibold text-lg mb-4">Pegar carta a formacion</h2>
 
         <div className="mb-4">
           <p className="text-sm text-felt-300 mb-2">Carta:</p>

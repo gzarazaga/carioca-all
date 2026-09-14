@@ -11,9 +11,13 @@ export default function TurnIndicator() {
     : 'debe descartar'
 
   return (
-    <div className={`rounded-lg px-4 py-2 text-center font-bold ${
-      isMyTurn ? 'bg-warning-500 text-black animate-pulse' : 'bg-felt-800/80'
-    }`}>
+    <div
+      className={`rounded-xl px-5 py-2.5 text-center font-display font-semibold text-sm ${
+        isMyTurn
+          ? 'bg-gradient-to-r from-warning-500 to-warning-600 text-felt-900 pulse-amber'
+          : 'glass-panel'
+      }`}
+    >
       {isMyTurn
         ? `Tu turno — ${turnLabel}`
         : `Turno de ${estado.jugadorActualNombre}`

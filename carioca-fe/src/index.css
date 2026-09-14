@@ -1,81 +1,118 @@
 @import "tailwindcss";
 
 @theme {
-  /* Superficie de la mesa (felt) */
-  --color-felt-300: var(--color-green-300);
-  --color-felt-400: var(--color-green-400);
-  --color-felt-500: var(--color-green-500);
-  --color-felt-600: var(--color-green-600);
-  --color-felt-700: var(--color-green-700);
-  --color-felt-800: var(--color-green-800);
-  --color-felt-900: var(--color-green-900);
+  /* Fondo / superficies (antes "felt" verde de mesa, ahora oscuro neon) */
+  --color-felt-900: oklch(12% 0.015 280);
+  --color-felt-800: oklch(17% 0.02 280);
+  --color-felt-700: oklch(21% 0.02 280);
+  --color-felt-600: oklch(36% 0.04 280);
+  --color-felt-500: oklch(45% 0.02 280);
+  --color-felt-400: oklch(58% 0.02 280);
+  --color-felt-300: oklch(72% 0.02 280);
 
-  /* Accion principal (crear, confirmar, continuar) */
-  --color-primary-300: var(--color-blue-300);
-  --color-primary-400: var(--color-blue-400);
-  --color-primary-500: var(--color-blue-500);
-  --color-primary-600: var(--color-blue-600);
-  --color-primary-700: var(--color-blue-700);
+  /* Accion principal (crear partida, bajar formacion) */
+  --color-primary-300: oklch(80% 0.14 310);
+  --color-primary-400: oklch(70% 0.18 305);
+  --color-primary-500: oklch(64% 0.2 300);
+  --color-primary-600: oklch(58% 0.22 295);
+  --color-primary-700: oklch(50% 0.2 295);
 
   /* Confirmacion positiva (unirse) */
-  --color-success-400: var(--color-green-400);
-  --color-success-600: var(--color-green-600);
-  --color-success-700: var(--color-green-700);
+  --color-success-400: oklch(80% 0.13 200);
+  --color-success-600: oklch(75% 0.14 200);
+  --color-success-700: oklch(65% 0.14 200);
 
   /* Peligro / descartar */
-  --color-danger-300: var(--color-red-300);
-  --color-danger-400: var(--color-red-400);
-  --color-danger-600: var(--color-red-600);
-  --color-danger-700: var(--color-red-700);
+  --color-danger-300: oklch(76% 0.15 25);
+  --color-danger-400: oklch(70% 0.19 25);
+  --color-danger-600: oklch(66% 0.22 25);
+  --color-danger-700: oklch(58% 0.22 20);
 
   /* Aviso / turno / iniciar partida */
-  --color-warning-200: var(--color-yellow-200);
-  --color-warning-300: var(--color-yellow-300);
-  --color-warning-400: var(--color-yellow-400);
-  --color-warning-500: var(--color-yellow-500);
-  --color-warning-600: var(--color-yellow-600);
-  --color-warning-700: var(--color-yellow-700);
+  --color-warning-200: oklch(92% 0.06 85);
+  --color-warning-300: oklch(85% 0.12 85);
+  --color-warning-400: oklch(80% 0.16 85);
+  --color-warning-500: oklch(76% 0.17 78);
+  --color-warning-600: oklch(70% 0.18 68);
+  --color-warning-700: oklch(60% 0.18 58);
 
   /* Formaciones / pegar carta */
-  --color-accent-400: var(--color-purple-400);
-  --color-accent-600: var(--color-purple-600);
-  --color-accent-700: var(--color-purple-700);
+  --color-accent-400: oklch(70% 0.2 330);
+  --color-accent-600: oklch(62% 0.22 320);
+  --color-accent-700: oklch(54% 0.22 320);
 
   /* Neutro / accion secundaria */
-  --color-neutral-300: var(--color-gray-300);
-  --color-neutral-400: var(--color-gray-400);
-  --color-neutral-500: var(--color-gray-500);
-  --color-neutral-600: var(--color-gray-600);
-  --color-neutral-700: var(--color-gray-700);
+  --color-neutral-300: oklch(70% 0.02 280);
+  --color-neutral-400: oklch(58% 0.02 280);
+  --color-neutral-500: oklch(45% 0.02 280);
+  --color-neutral-600: oklch(28% 0.02 280);
+  --color-neutral-700: oklch(22% 0.02 280);
+
+  /* Segundo extremo de los degrades neon (acompaña a primary/accent) */
+  --color-pink-400: oklch(72% 0.2 340);
+  --color-pink-500: oklch(65% 0.22 340);
+  --color-pink-600: oklch(58% 0.22 340);
+
+  /* Frente de carta (siempre claro, sea cual sea el tema) */
+  --color-card-red: oklch(56% 0.2 22);
+  --color-card-black: oklch(20% 0 0);
+
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
 }
 
 @layer base {
   body {
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: var(--font-body);
     margin: 0;
   }
 }
 
 @layer components {
   .card-shadow {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(0, 0, 0, 0.4);
   }
   .card-selected {
     transform: translateY(-14px) scale(1.05);
-    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.6), 0 10px 20px rgba(0, 0, 0, 0.35);
+    box-shadow:
+      0 0 0 3px var(--color-pink-500),
+      0 10px 24px rgba(0, 0, 0, 0.45),
+      0 0 22px oklch(65% 0.22 340 / 0.45);
   }
 
-  /* Patron tipo enrejado para el dorso de las cartas */
-  .card-back-pattern {
-    background-color: var(--color-primary-700);
-    background-image:
-      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0.08) 2px, transparent 2px, transparent 10px),
-      repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 0, rgba(255, 255, 255, 0.08) 2px, transparent 2px, transparent 10px);
+  /* Glass panel neon: fondo translucido con blur, usado en tarjetas/paneles flotantes */
+  .glass-panel {
+    background: oklch(18% 0.025 280 / 0.65);
+    backdrop-filter: blur(16px);
+    border: 1.5px solid oklch(50% 0.1 300 / 0.4);
+  }
+
+  /* Texto con degrade neon (titulos) */
+  .neon-text {
+    background: linear-gradient(90deg, var(--color-primary-600), var(--color-pink-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Resplandor ambar pulsante (indicador de turno, pilas activas) */
+  @keyframes pulse-amber {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 oklch(80% 0.16 85 / 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 8px oklch(80% 0.16 85 / 0);
+    }
+  }
+  .pulse-amber {
+    animation: pulse-amber 2s ease-in-out infinite;
   }
 }
 
 @keyframes card-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(var(--rot, 0deg));
   }
   50% {
@@ -89,6 +126,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-card-float {
+    animation: none;
+  }
+  .pulse-amber {
     animation: none;
   }
 }

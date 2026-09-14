@@ -72,9 +72,9 @@ export default function FormationBuilder() {
   const canConfirmar = !loading && totalFormaciones > 0
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-felt-900 border border-felt-600 rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4">Bajar formaciones</h2>
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="glass-panel bg-felt-900/95 rounded-2xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+        <h2 className="font-display font-semibold text-lg mb-4">Bajar formaciones</h2>
 
         {/* Pool de cartas disponibles */}
         {poolCartas.length > 0 && (
@@ -93,7 +93,7 @@ export default function FormationBuilder() {
         )}
 
         {/* Formación actual en construcción */}
-        <div className="mb-4 border border-felt-700 rounded-lg p-3">
+        <div className="mb-4 border border-felt-600 rounded-xl p-3.5">
           <p className="text-sm text-felt-300 mb-2 font-semibold">
             Formación actual{formaciones.length > 0 ? ` (#${formaciones.length + 1})` : ''}:
           </p>
@@ -154,7 +154,7 @@ export default function FormationBuilder() {
               {formaciones.map((f, i) => {
                 const cartas = misCartas.filter((c) => f.cartaIds.includes(c.id))
                 return (
-                  <div key={i} className="flex items-center gap-2 bg-felt-800 rounded-lg p-2">
+                  <div key={i} className="flex items-center gap-2 bg-felt-800 rounded-xl p-2.5">
                     <span className="text-xs font-bold text-primary-300 shrink-0">{f.tipo}</span>
                     <div className="flex gap-1 flex-wrap flex-1">
                       {cartas.map((c) => (

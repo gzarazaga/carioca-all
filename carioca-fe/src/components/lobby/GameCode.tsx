@@ -15,17 +15,17 @@ export default function GameCode({ partidaId }: Props) {
   }
 
   return (
-    <div className="bg-felt-800/60 rounded-lg p-4 text-center">
-      <p className="text-sm text-felt-300 mb-2">Codigo de partida</p>
-      <div className="flex items-center justify-center gap-2">
-        <code className="text-2xl font-mono font-bold bg-felt-700/60 px-4 py-2 rounded tracking-wider">
+    <div className="glass-panel rounded-2xl p-5 text-center">
+      <p className="text-[11px] uppercase tracking-wider text-felt-300 mb-2.5">Codigo de partida</p>
+      <div className="flex items-center justify-center gap-2.5">
+        <code className="text-2xl font-mono font-semibold bg-felt-900 border border-felt-600 text-success-400 px-4 py-2.5 rounded-xl tracking-wider drop-shadow-[0_0_10px_var(--color-success-600)]">
           {partidaId}
         </code>
-        <Button onClick={copy} variant="primary" size="md" bold={false}>
+        <Button onClick={copy} variant="success" size="md" bold={false}>
           {copied ? 'Copiado!' : 'Copiar'}
         </Button>
       </div>
-      <p className="text-xs text-felt-400 mt-2">
+      <p className="text-[11px] text-felt-400 mt-2.5">
         Comparte este codigo para que otros se unan
       </p>
     </div>

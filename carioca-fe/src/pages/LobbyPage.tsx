@@ -64,11 +64,19 @@ export default function LobbyPage() {
   const canStart = estado && estado.jugadores.length >= 2
 
   return (
-    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-6">
+    <div className="min-h-screen bg-felt-900 flex items-center justify-center p-4 relative overflow-hidden">
+      <div
+        className="absolute -top-56 -left-40 w-[620px] h-[620px] rounded-full opacity-30 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-primary-600) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute -bottom-60 -right-44 w-[640px] h-[640px] rounded-full opacity-25 blur-3xl pointer-events-none"
+        style={{ background: 'radial-gradient(circle, var(--color-success-600) 0%, transparent 70%)' }}
+      />
+      <div className="max-w-md w-full space-y-6 relative z-10">
         <div className="text-center">
-          <h1 className="text-3xl font-bold mb-1">🃏 Sala de espera</h1>
-          <p className="text-felt-300">Esperando jugadores...</p>
+          <h1 className="font-display font-extrabold text-2xl neon-text mb-1">Sala de espera</h1>
+          <p className="text-felt-300 text-sm">Esperando jugadores...</p>
         </div>
 
         {id && <GameCode partidaId={id} />}
