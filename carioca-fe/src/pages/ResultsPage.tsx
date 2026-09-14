@@ -75,7 +75,7 @@ export default function ResultsPage() {
           Nueva partida
         </Button>
 
-        <AdUnit slot="0000000002" />
+        <AdUnit slot="7779352396" />
       </div>
     </div>
   )

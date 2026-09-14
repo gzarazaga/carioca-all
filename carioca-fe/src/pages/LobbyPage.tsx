@@ -94,7 +94,7 @@ export default function LobbyPage() {
           Volver al inicio
         </Button>
 
-        <AdUnit slot="0000000001" />
+        <AdUnit slot="1208048497" />
       </div>
     </div>
   )

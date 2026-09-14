@@ -163,7 +163,7 @@ export default function HomePage() {
       </div>
 
       <div className="max-w-md w-full relative z-10">
-        <AdUnit slot="0000000000" />
+        <AdUnit slot="7885137481" />
       </div>
     </div>
   )
