@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Política de Privacidad — Carioca</title>
+  <meta name="description" content="Política de privacidad de Carioca (app móvil y sitio web): qué datos se recopilan, cómo se usan y cómo contactarnos." />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap"
+  />
+
+  <style>
+    :root {
+      --felt-900: oklch(12% 0.015 280);
+      --felt-800: oklch(17% 0.02 280);
+      --felt-700: oklch(21% 0.02 280);
+      --felt-600: oklch(36% 0.04 280);
+      --felt-300: oklch(72% 0.02 280);
+      --primary-600: oklch(58% 0.22 295);
+      --pink-500: oklch(65% 0.22 340);
+      --success-400: oklch(80% 0.13 200);
+      --warning-300: oklch(85% 0.12 85);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--felt-900);
+      color: #fff;
+      font-family: 'Manrope', system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    a { color: var(--success-400); }
+    a:hover { color: var(--pink-500); }
+    h1 {
+      font-family: 'Unbounded', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      background: linear-gradient(90deg, var(--primary-600), var(--pink-500));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0 0 4px;
+    }
+    .updated {
+      color: var(--felt-300);
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+    h2 {
+      font-family: 'Unbounded', system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #fff;
+      margin: 36px 0 10px;
+    }
+    p, li { color: var(--felt-300); font-size: 15px; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    strong { color: #fff; }
+    .card {
+      background: oklch(18% 0.025 280 / 0.65);
+      border: 1.5px solid oklch(50% 0.1 300 / 0.4);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 8px;
+    }
+    .contact a { font-weight: 600; }
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--felt-600);
+      font-size: 12px;
+      color: var(--felt-300);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Política de Privacidad</h1>
+    <p class="updated">Última actualización: 15 de septiembre de 2026</p>
+
+    <div class="card">
+      <p style="margin:0">
+        Carioca es un proyecto personal, no comercial. Este documento aplica tanto a la
+        <strong>app móvil</strong> (Android, distribuida en Google Play) como al
+        <strong>sitio web</strong> en <a href="https://carioca-one.vercel.app/">carioca-one.vercel.app</a>.
+        Donde el tratamiento de datos difiere entre ambos, se aclara explícitamente.
+      </p>
+    </div>
+
+    <h2>Qué datos recopilamos</h2>
+    <ul>
+      <li><strong>Nombre de jugador</strong>: el que elijas libremente al crear o unirte a una partida. No lo verificamos ni lo vinculamos a tu identidad real — es visible para el resto de los jugadores de esa partida.</li>
+      <li><strong>Identificadores de partida y de jugador</strong>: se generan automáticamente al crear o unirte a una partida, para poder conectarte a la sala correcta.</li>
+      <li><strong>Estado de la partida</strong>: cartas, puntajes y movimientos — necesario para que el juego funcione en tiempo real entre los participantes.</li>
+    </ul>
+    <p>
+      <strong>No</strong> pedimos email, teléfono, ubicación, contactos, cámara, ni ningún otro
+      permiso del dispositivo. <strong>No</strong> hay registro de usuario, cuentas ni contraseñas.
+    </p>
+
+    <h2>Almacenamiento local (solo app móvil)</h2>
+    <p>
+      La app guarda tu nombre y los identificadores de la partida actual en el almacenamiento
+      local del dispositivo, para poder reconectarte si cerrás la app en medio de una partida.
+      Ese dato no sale de tu dispositivo salvo para comunicarse con nuestro backend, como cualquier
+      otra acción del juego.
+    </p>
+
+    <h2>Dónde se procesan estos datos</h2>
+    <p>
+      El backend de Carioca corre en <strong>Render</strong> y la base de datos en
+      <strong>Neon</strong> (Postgres) — ambos son proveedores de infraestructura que alojan el
+      servicio, no tienen acceso al contenido de las partidas más allá de operar la plataforma.
+      Las conexiones viajan cifradas (HTTPS / WebSocket seguro).
+    </p>
+
+    <h2>Publicidad y analítica</h2>
+    <p>
+      <strong>La app móvil no muestra publicidad ni integra SDKs de analítica o rastreo</strong> de
+      ningún tipo.
+    </p>
+    <p>
+      El <strong>sitio web</strong> sí utiliza Google AdSense para mostrar anuncios, que puede usar
+      cookies o identificadores propios según las
+      <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">políticas de publicidad de Google</a>.
+      Esto es exclusivo de la versión web y no aplica a la app de Google Play.
+    </p>
+
+    <h2>Compartición con terceros</h2>
+    <p>
+      No vendemos ni compartimos tus datos con terceros con fines publicitarios. Los únicos
+      terceros involucrados son los proveedores de infraestructura mencionados arriba (Render,
+      Neon) y, solo en el sitio web, Google AdSense.
+    </p>
+
+    <h2>Menores de edad</h2>
+    <p>
+      Carioca no está dirigido específicamente a menores de 13 años y no recopilamos
+      deliberadamente datos de menores. Al no pedir email ni datos de contacto, el riesgo de
+      exposición de información personal es mínimo.
+    </p>
+
+    <h2>Retención y eliminación de datos</h2>
+    <p>
+      Los nombres y el estado de las partidas quedan en la base de datos mientras el servicio esté
+      activo. Si querés que eliminemos datos asociados a una partida o nombre específico, escribinos
+      por los canales de contacto de abajo.
+    </p>
+
+    <h2>Cambios a esta política</h2>
+    <p>
+      Este documento puede actualizarse. La fecha de "Última actualización" al principio de la
+      página siempre refleja la versión vigente.
+    </p>
+
+    <h2>Contacto</h2>
+    <div class="card contact">
+      <p style="margin:0 0 8px">Para consultas sobre esta política o tus datos:</p>
+      <p style="margin:0">Email: <a href="mailto:gonzadev78@gmail.com">gonzadev78@gmail.com</a></p>
+      <p style="margin:4px 0 0">
+        GitHub Issues: <a href="https://github.com/zzdev26-svg/carioca-all/issues" target="_blank" rel="noopener noreferrer">github.com/zzdev26-svg/carioca-all/issues</a>
+      </p>
+    </div>
+
+    <footer>Carioca — proyecto personal de código abierto.</footer>
+  </div>
+</body>
+</html>
