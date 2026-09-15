@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View, Text, Pressable, Modal } from 'react-native'
+import { View, Text, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useGameStore } from '../../src/stores/gameStore'
@@ -11,6 +11,10 @@ import ActionBar from '../../src/components/actions/ActionBar'
 import FormationBuilder from '../../src/components/actions/FormationBuilder'
 import PegarDialog from '../../src/components/actions/PegarDialog'
 import Scoreboard from '../../src/components/common/Scoreboard'
+import Button from '../../src/components/common/Button'
+import GlassPanel from '../../src/components/common/GlassPanel'
+import NeonBackground from '../../src/components/common/NeonBackground'
+import { TrophyIcon } from '../../src/components/common/icons'
 
 export default function GamePage() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -51,7 +55,8 @@ export default function GamePage() {
   }, [estado?.estado, gameEndInfo, id, router])
 
   return (
-    <SafeAreaView className="flex-1 bg-green-900">
+    <SafeAreaView className="flex-1 bg-felt-900">
+      <NeonBackground variant="success" />
       <GameBoard />
       <ActionBar />
       <FormationBuilder />
@@ -60,31 +65,35 @@ export default function GamePage() {
       {/* Round end overlay */}
       <Modal visible={!!roundEndInfo} transparent animationType="fade">
         <View className="flex-1 bg-black/70 items-center justify-center p-4">
-          <View className="bg-green-900 border border-green-600 rounded-xl p-6 max-w-md w-full items-center">
-            <Text className="text-2xl font-bold mb-4 text-white">Ronda terminada!</Text>
-            {estado && roundEndInfo && (
-              <Scoreboard jugadores={estado.jugadores} ganadorId={roundEndInfo.ganadorId} />
-            )}
-            <Pressable
-              onPress={() => setRoundEndInfo(null)}
-              className="mt-4 px-6 py-2 bg-blue-600 rounded-lg"
-            >
-              <Text className="font-bold text-white">Continuar</Text>
-            </Pressable>
-          </View>
+          <GlassPanel style={{ width: '100%', maxWidth: 420, borderRadius: 24 }}>
+            <View className="p-6 items-center">
+              <Text className="font-display-semibold text-xl text-white mb-4">Ronda terminada!</Text>
+              {estado && roundEndInfo && (
+                <Scoreboard jugadores={estado.jugadores} ganadorId={roundEndInfo.ganadorId} />
+              )}
+              <Button onPress={() => setRoundEndInfo(null)} variant="primary" size="md" style={{ marginTop: 16, width: '100%' }}>
+                Continuar
+              </Button>
+            </View>
+          </GlassPanel>
         </View>
       </Modal>
 
       {/* Game end overlay */}
       <Modal visible={!!gameEndInfo} transparent animationType="fade">
         <View className="flex-1 bg-black/70 items-center justify-center p-4">
-          <View className="bg-green-900 border border-yellow-500 rounded-xl p-6 max-w-md w-full items-center">
-            <Text className="text-3xl font-bold mb-2 text-white">🏆 Partida terminada!</Text>
-            <Text className="text-green-300 mb-4">Redirigiendo a resultados...</Text>
-            {estado && gameEndInfo && (
-              <Scoreboard jugadores={estado.jugadores} ganadorId={gameEndInfo.ganadorId} />
-            )}
-          </View>
+          <GlassPanel style={{ width: '100%', maxWidth: 420, borderRadius: 24, borderColor: 'rgba(237,180,23,0.5)' }}>
+            <View className="p-6 items-center">
+              <View className="flex-row items-center gap-2 mb-2">
+                <TrophyIcon size={26} color="#eba000" />
+                <Text className="font-display-bold text-2xl text-warning-400">Partida terminada!</Text>
+              </View>
+              <Text className="text-felt-300 mb-4 text-sm">Redirigiendo a resultados...</Text>
+              {estado && gameEndInfo && (
+                <Scoreboard jugadores={estado.jugadores} ganadorId={gameEndInfo.ganadorId} />
+              )}
+            </View>
+          </GlassPanel>
         </View>
       </Modal>
     </SafeAreaView>

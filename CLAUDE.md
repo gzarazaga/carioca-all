@@ -101,7 +101,9 @@ npm run preview      # Preview del build
 ### Stack
 - Expo SDK 57 (React Native 0.86, React 19), TypeScript
 - Expo Router (navegación por archivos)
-- NativeWind (Tailwind para RN)
+- NativeWind (Tailwind para RN) con la paleta "neon arcade" de `carioca-fe` portada a hex en `tailwind.config.js` / `src/theme.ts`
+- Fuentes Unbounded + Manrope (`@expo-google-fonts/*`, cargadas en `app/_layout.tsx` vía `expo-font`)
+- `expo-linear-gradient` (botones y fondos con degrade), `expo-blur` (paneles "glass"), `react-native-svg` (íconos e ilustraciones de carta)
 - Zustand, AsyncStorage
 
 ### Estructura

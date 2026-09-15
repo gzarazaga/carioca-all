@@ -1,8 +1,10 @@
-import { View, Text, Pressable, Modal, ScrollView } from 'react-native'
+import { View, Text, Modal, ScrollView } from 'react-native'
 import { useGameStore, useFormaciones } from '../../stores/gameStore'
 import { useGameActions } from '../../hooks/useGameActions'
 import Card from '../card/Card'
 import FormationGroup from '../game/FormationGroup'
+import Button from '../common/Button'
+import GlassPanel from '../common/GlassPanel'
 
 export default function PegarDialog() {
   const show = useGameStore((s) => s.showPegarDialog)
@@ -20,51 +22,42 @@ export default function PegarDialog() {
 
   return (
     <Modal visible transparent animationType="fade" onRequestClose={() => setShowPegarDialog(false)}>
-      <View className="flex-1 bg-black/60 items-center justify-center p-4">
-        <View className="bg-green-900 border border-green-600 rounded-xl p-6 max-w-lg w-full max-h-[90%]">
-          <Text className="text-xl font-bold mb-4 text-white">Pegar carta a formacion</Text>
+      <View className="flex-1 bg-black/70 items-center justify-center p-4">
+        <GlassPanel style={{ width: '100%', maxWidth: 480, maxHeight: '90%', borderRadius: 24 }}>
+          <View className="p-5">
+            <Text className="font-display-semibold text-xl text-white mb-4">Pegar carta a formación</Text>
 
-          <ScrollView>
-            <View className="mb-4">
-              <Text className="text-sm text-green-300 mb-2">Carta:</Text>
-              <Card carta={carta} />
-            </View>
-
-            <View className="mb-4">
-              <Text className="text-sm text-green-300 mb-2">Elegir formacion:</Text>
-              <View className="gap-3">
-                {formaciones.map((f) => (
-                  <View key={f.id} className="flex-row items-center gap-2">
-                    <FormationGroup formacion={f} />
-                    <View className="gap-1">
-                      <Pressable
-                        onPress={() => pegar(carta.id, f.id, true)}
-                        disabled={loading}
-                        className={`px-3 py-1 bg-purple-600 rounded ${loading ? 'opacity-50' : ''}`}
-                      >
-                        <Text className="text-xs font-bold text-white">Al inicio</Text>
-                      </Pressable>
-                      <Pressable
-                        onPress={() => pegar(carta.id, f.id, false)}
-                        disabled={loading}
-                        className={`px-3 py-1 bg-purple-600 rounded ${loading ? 'opacity-50' : ''}`}
-                      >
-                        <Text className="text-xs font-bold text-white">Al final</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                ))}
+            <ScrollView>
+              <View className="mb-4">
+                <Text className="text-sm text-felt-300 mb-2">Carta:</Text>
+                <Card carta={carta} />
               </View>
-            </View>
-          </ScrollView>
 
-          <Pressable
-            onPress={() => setShowPegarDialog(false)}
-            className="px-4 py-2 bg-gray-600 rounded-lg self-start"
-          >
-            <Text className="text-sm text-white">Cancelar</Text>
-          </Pressable>
-        </View>
+              <View className="mb-4">
+                <Text className="text-sm text-felt-300 mb-2">Elegir formación:</Text>
+                <View className="gap-3">
+                  {formaciones.map((f) => (
+                    <View key={f.id} className="flex-row items-center gap-2">
+                      <FormationGroup formacion={f} />
+                      <View className="gap-1">
+                        <Button onPress={() => pegar(carta.id, f.id, true)} disabled={loading} variant="accent" size="sm">
+                          Al inicio
+                        </Button>
+                        <Button onPress={() => pegar(carta.id, f.id, false)} disabled={loading} variant="accent" size="sm">
+                          Al final
+                        </Button>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </ScrollView>
+
+            <Button onPress={() => setShowPegarDialog(false)} variant="neutral" size="sm" bold={false} style={{ alignSelf: 'flex-start' }}>
+              Cancelar
+            </Button>
+          </View>
+        </GlassPanel>
       </View>
     </Modal>
   )

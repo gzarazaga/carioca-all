@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useGameStore } from '../../src/stores/gameStore'
 import * as api from '../../src/services/api'
 import { clearSession, loadSession } from '../../src/utils/storage'
 import Scoreboard from '../../src/components/common/Scoreboard'
+import Button from '../../src/components/common/Button'
+import NeonBackground from '../../src/components/common/NeonBackground'
+import { TrophyIcon, SparkIcon } from '../../src/components/common/icons'
 
 export default function ResultsPage() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -43,29 +46,28 @@ export default function ResultsPage() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-green-900">
-      <View className="flex-1 items-center justify-center p-4">
-        <View className="max-w-md w-full gap-6 items-center">
-          <Text className="text-4xl font-bold text-white text-center">
-            {isWinner ? '🎉 Ganaste!' : '🏆 Fin de la partida'}
-          </Text>
+    <SafeAreaView className="flex-1 bg-felt-900">
+      <NeonBackground variant="warning" />
+      <View className="flex-1 items-center justify-center p-5">
+        <View className="w-full gap-6 items-center" style={{ maxWidth: 420 }}>
+          <View className="flex-row items-center gap-2.5">
+            {isWinner ? <SparkIcon size={28} /> : <TrophyIcon size={28} />}
+            <Text className="font-display-extrabold text-3xl text-warning-400">
+              {isWinner ? '¡Ganaste!' : 'Fin de la partida'}
+            </Text>
+          </View>
 
           {ganador && (
-            <Text className="text-xl text-yellow-300 text-center">
-              Ganador: <Text className="font-bold">{ganador.nombre}</Text> con {ganador.puntosTotales} puntos
+            <Text className="text-xl text-warning-300 text-center">
+              Ganador: <Text className="font-body-bold">{ganador.nombre}</Text> con {ganador.puntosTotales} puntos
             </Text>
           )}
 
-          {estado && (
-            <Scoreboard jugadores={estado.jugadores} ganadorId={estado.ganadorId} />
-          )}
+          {estado && <Scoreboard jugadores={estado.jugadores} ganadorId={estado.ganadorId} />}
 
-          <Pressable
-            onPress={handleNewGame}
-            className="w-full px-4 py-3 bg-blue-600 active:bg-blue-700 rounded-lg"
-          >
-            <Text className="font-bold text-lg text-white text-center">Nueva partida</Text>
-          </Pressable>
+          <Button onPress={handleNewGame} variant="primary" size="lg" style={{ width: '100%' }}>
+            Nueva partida
+          </Button>
         </View>
       </View>
     </SafeAreaView>
