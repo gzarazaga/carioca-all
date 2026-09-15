@@ -1,6 +1,8 @@
-import { View, Text, Pressable } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import type { Carta } from '../../types/game'
 import { getSuitSymbol, getSuitColor, getValueDisplay, isJoker } from '../../utils/cardHelpers'
+import { colors } from '../../theme'
+import { SparkIcon } from '../common/icons'
 
 interface Props {
   carta: Carta
@@ -11,10 +13,18 @@ interface Props {
 
 export const CARD_SHADOW = {
   shadowColor: '#000',
-  shadowOffset: { width: 2, height: 2 },
-  shadowOpacity: 0.3,
-  shadowRadius: 4,
-  elevation: 3,
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.35,
+  shadowRadius: 6,
+  elevation: 4,
+}
+
+const SELECTED_GLOW = {
+  shadowColor: colors.pink[500],
+  shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.55,
+  shadowRadius: 12,
+  elevation: 10,
 }
 
 export default function Card({ carta, selected, onPress, small }: Props) {
@@ -29,24 +39,35 @@ export default function Card({ carta, selected, onPress, small }: Props) {
     <Pressable
       onPress={onPress}
       className={`
-        ${size} rounded-lg bg-white border-2 items-center justify-between
-        p-1
-        ${selected ? 'border-blue-400' : 'border-gray-300'}
+        ${size} rounded-xl bg-white border-2 items-center justify-between
+        ${small ? 'p-1' : 'p-1.5'}
+        ${selected ? 'border-primary-400' : 'border-neutral-300'}
       `}
       style={[
         CARD_SHADOW,
-        selected ? { transform: [{ translateY: -12 }] } : null,
+        selected ? [SELECTED_GLOW, { transform: [{ translateY: -14 }, { scale: 1.05 }] }] : null,
       ]}
     >
-      <Text className={`self-start font-bold ${small ? 'text-xs' : 'text-sm'} ${color}`}>
-        {value}
-      </Text>
-      <Text className={`${small ? 'text-lg' : 'text-2xl'} ${color}`}>
-        {joker ? '🃏' : suit}
-      </Text>
-      <Text className={`self-end font-bold rotate-180 ${small ? 'text-xs' : 'text-sm'} ${color}`}>
-        {value}
-      </Text>
+      {joker ? (
+        <View className="absolute inset-0 items-center justify-center">
+          <View
+            className="absolute rounded-full"
+            style={{ width: small ? 22 : 32, height: small ? 22 : 32, backgroundColor: colors.primary[400], opacity: 0.3 }}
+          />
+          <SparkIcon size={small ? 18 : 26} color={colors.warning[500]} />
+        </View>
+      ) : (
+        <>
+          <Text className={`self-start font-bold ${small ? 'text-[9px]' : 'text-sm'} ${color}`}>{value}</Text>
+          <Text className={`${small ? 'text-lg' : 'text-2xl'} ${color}`}>{suit}</Text>
+          <Text
+            className={`self-end font-bold ${small ? 'text-[9px]' : 'text-sm'} ${color}`}
+            style={{ transform: [{ rotate: '180deg' }] }}
+          >
+            {value}
+          </Text>
+        </>
+      )}
     </Pressable>
   )
 }

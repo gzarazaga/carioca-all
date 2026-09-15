@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import { View, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useGameStore } from '../../src/stores/gameStore'
@@ -8,6 +8,9 @@ import * as api from '../../src/services/api'
 import { loadSession } from '../../src/utils/storage'
 import PlayerList from '../../src/components/lobby/PlayerList'
 import GameCode from '../../src/components/lobby/GameCode'
+import Button from '../../src/components/common/Button'
+import NeonBackground from '../../src/components/common/NeonBackground'
+import { neonTitleStyle } from '../../src/theme'
 
 export default function LobbyPage() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -65,36 +68,28 @@ export default function LobbyPage() {
   const canStart = estado && estado.jugadores.length >= 2
 
   return (
-    <SafeAreaView className="flex-1 bg-green-900">
-      <View className="flex-1 items-center justify-center p-4">
-        <View className="max-w-md w-full gap-6">
+    <SafeAreaView className="flex-1 bg-felt-900">
+      <NeonBackground variant="success" />
+      <View className="flex-1 items-center justify-center p-5">
+        <View className="w-full gap-5" style={{ maxWidth: 420 }}>
           <View className="items-center">
-            <Text className="text-3xl font-bold mb-1 text-white">🃏 Sala de espera</Text>
-            <Text className="text-green-300">Esperando jugadores...</Text>
+            <Text className="font-display-extrabold text-2xl mb-1" style={neonTitleStyle}>
+              Sala de espera
+            </Text>
+            <Text className="text-felt-300 text-sm">Esperando jugadores...</Text>
           </View>
 
           {id && <GameCode partidaId={id} />}
 
-          {estado && (
-            <PlayerList jugadores={estado.jugadores} currentPlayerId={jugadorId} />
-          )}
+          {estado && <PlayerList jugadores={estado.jugadores} currentPlayerId={jugadorId} />}
 
-          <Pressable
-            onPress={handleStart}
-            disabled={!canStart}
-            className={`w-full px-4 py-3 bg-yellow-600 active:bg-yellow-700 rounded-lg ${!canStart ? 'opacity-50' : ''}`}
-          >
-            <Text className="font-bold text-lg text-white text-center">
-              {canStart ? 'Iniciar partida' : 'Esperando mas jugadores...'}
-            </Text>
-          </Pressable>
+          <Button onPress={handleStart} disabled={!canStart} variant="warning" size="lg">
+            {canStart ? 'Iniciar partida' : 'Esperando más jugadores...'}
+          </Button>
 
-          <Pressable
-            onPress={() => router.replace('/')}
-            className="w-full px-4 py-2 bg-gray-600 active:bg-gray-700 rounded-lg"
-          >
-            <Text className="text-sm text-white text-center">Volver al inicio</Text>
-          </Pressable>
+          <Button onPress={() => router.replace('/')} variant="neutral" size="md" bold={false}>
+            Volver al inicio
+          </Button>
         </View>
       </View>
     </SafeAreaView>

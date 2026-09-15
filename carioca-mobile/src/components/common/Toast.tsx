@@ -1,11 +1,11 @@
-import { View, Text, Pressable } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useGameStore } from '../../stores/gameStore'
 
 const COLORS: Record<string, string> = {
-  info: 'bg-blue-600',
-  success: 'bg-green-600',
-  error: 'bg-red-600',
+  info: 'bg-primary-600',
+  success: 'bg-success-700',
+  error: 'bg-danger-600',
 }
 
 export default function Toast() {
@@ -24,10 +24,10 @@ export default function Toast() {
       {toasts.map((t) => (
         <View
           key={t.id}
-          className={`${COLORS[t.type]} px-4 py-2 rounded-lg flex-row items-center justify-between gap-2`}
+          className={`${COLORS[t.type]} px-4 py-3 rounded-xl flex-row items-center justify-between gap-2`}
         >
-          <Text className="text-white text-sm font-medium flex-1">{t.text}</Text>
-          <Pressable onPress={() => removeToast(t.id)}>
+          <Text className="text-white text-sm font-body-medium flex-1">{t.text}</Text>
+          <Pressable onPress={() => removeToast(t.id)} hitSlop={8}>
             <Text className="text-white opacity-70">✕</Text>
           </Pressable>
         </View>

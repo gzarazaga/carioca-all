@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
-import { View, Text, TextInput, Pressable, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
+import { View, Text, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import * as api from '../src/services/api'
 import { useGameStore } from '../src/stores/gameStore'
 import { saveSession, loadSession, clearSession } from '../src/utils/storage'
+import Button from '../src/components/common/Button'
+import GlassPanel from '../src/components/common/GlassPanel'
+import NeonBackground from '../src/components/common/NeonBackground'
+import { neonTitleStyle } from '../src/theme'
 
 interface SavedSession {
   partidaId: string
@@ -93,85 +97,75 @@ export default function HomePage() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-green-900">
-    <KeyboardAvoidingView
-      className="flex-1"
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerClassName="flex-1 items-center justify-center p-4">
-        <View className="max-w-md w-full gap-6">
-          <View className="items-center">
-            <Text className="text-5xl font-bold mb-2 text-white text-center">🃏 Carioca</Text>
-            <Text className="text-green-300">Juego de cartas para 2-6 jugadores</Text>
-          </View>
-
-          {savedSession && (
-            <View className="bg-yellow-600/20 border border-yellow-500/40 rounded-lg p-4 gap-2">
-              <Text className="text-sm text-yellow-200 mb-2">
-                Tienes una partida en curso como <Text className="font-bold">{savedSession.nombreJugador}</Text>
+    <SafeAreaView className="flex-1 bg-felt-900">
+      <NeonBackground variant="success" />
+      <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView contentContainerClassName="flex-1 items-center justify-center p-5">
+          <View className="w-full gap-6" style={{ maxWidth: 420 }}>
+            <View className="items-center gap-1.5">
+              <Text className="font-display-extrabold text-4xl" style={neonTitleStyle}>
+                Carioca
               </Text>
-              <View className="flex-row gap-2">
-                <Pressable
-                  onPress={handleRejoin}
-                  className="px-4 py-2 bg-yellow-600 active:bg-yellow-700 rounded-lg"
-                >
-                  <Text className="font-bold text-sm text-white">Volver a la partida</Text>
-                </Pressable>
-                <Pressable
-                  onPress={handleDiscardSession}
-                  className="px-4 py-2 bg-gray-600 active:bg-gray-700 rounded-lg"
-                >
-                  <Text className="text-sm text-white">Descartar</Text>
-                </Pressable>
-              </View>
+              <Text className="text-felt-300 text-sm">Juego de cartas para 2-6 jugadores</Text>
             </View>
-          )}
 
-          <View>
-            <Text className="text-sm text-green-300 mb-1">Tu nombre</Text>
-            <TextInput
-              value={nombre}
-              onChangeText={setNombre}
-              placeholder="Ingresa tu nombre"
-              placeholderTextColor="#6ee7a5"
-              maxLength={50}
-              className="w-full px-4 py-3 bg-green-800 border border-green-600 rounded-lg text-white"
-            />
+            <GlassPanel>
+              <View className="p-6 gap-5">
+                {savedSession && (
+                  <View className="bg-warning-600/20 border border-warning-500/40 rounded-xl p-3.5 gap-2.5">
+                    <Text className="text-sm text-warning-200">
+                      Tenés una partida en curso como <Text className="font-body-bold">{savedSession.nombreJugador}</Text>
+                    </Text>
+                    <View className="flex-row gap-2">
+                      <Button onPress={handleRejoin} variant="warning" size="sm" style={{ flex: 1 }}>
+                        Volver a la partida
+                      </Button>
+                      <Button onPress={handleDiscardSession} variant="neutral" size="sm">
+                        Descartar
+                      </Button>
+                    </View>
+                  </View>
+                )}
+
+                <View>
+                  <Text className="text-[11px] font-body-bold uppercase tracking-wider text-felt-300 mb-2">Tu nombre</Text>
+                  <TextInput
+                    value={nombre}
+                    onChangeText={setNombre}
+                    placeholder="Ingresá tu nombre"
+                    placeholderTextColor="#535461"
+                    maxLength={50}
+                    className="w-full px-4 py-3.5 bg-felt-800/80 border border-felt-600 rounded-xl text-white"
+                  />
+                </View>
+
+                <Button onPress={handleCreate} disabled={loading} variant="primary" size="lg">
+                  Crear nueva partida
+                </Button>
+
+                <View className="flex-row items-center gap-3">
+                  <View className="flex-1 h-px bg-felt-600" />
+                  <Text className="text-felt-400 text-[11px] uppercase tracking-wider">o unirse a una</Text>
+                  <View className="flex-1 h-px bg-felt-600" />
+                </View>
+
+                <View className="flex-row gap-2">
+                  <TextInput
+                    value={codigo}
+                    onChangeText={setCodigo}
+                    placeholder="Código de partida"
+                    placeholderTextColor="#535461"
+                    className="flex-1 px-4 py-3.5 bg-felt-800/80 border border-felt-600 rounded-xl text-white"
+                  />
+                  <Button onPress={handleJoin} disabled={loading} variant="success" size="lg">
+                    Unirse
+                  </Button>
+                </View>
+              </View>
+            </GlassPanel>
           </View>
-
-          <Pressable
-            onPress={handleCreate}
-            disabled={loading}
-            className={`w-full px-4 py-3 bg-blue-600 active:bg-blue-700 rounded-lg ${loading ? 'opacity-50' : ''}`}
-          >
-            <Text className="font-bold text-lg text-white text-center">Crear nueva partida</Text>
-          </Pressable>
-
-          <View className="flex-row items-center gap-4">
-            <View className="flex-1 h-px bg-green-600" />
-            <Text className="text-green-400 text-sm">o unirse a una</Text>
-            <View className="flex-1 h-px bg-green-600" />
-          </View>
-
-          <View className="flex-row gap-2">
-            <TextInput
-              value={codigo}
-              onChangeText={setCodigo}
-              placeholder="Codigo de partida"
-              placeholderTextColor="#6ee7a5"
-              className="flex-1 px-4 py-3 bg-green-800 border border-green-600 rounded-lg text-white"
-            />
-            <Pressable
-              onPress={handleJoin}
-              disabled={loading}
-              className={`px-6 py-3 bg-green-600 active:bg-green-700 rounded-lg justify-center ${loading ? 'opacity-50' : ''}`}
-            >
-              <Text className="font-bold text-white">Unirse</Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

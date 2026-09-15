@@ -4,6 +4,8 @@ import { useGameStore } from '../../stores/gameStore'
 import { useGameActions } from '../../hooks/useGameActions'
 import type { FormacionInput } from '../../types/game'
 import Card from '../card/Card'
+import Button from '../common/Button'
+import GlassPanel from '../common/GlassPanel'
 
 type TipoFormacion = 'PIERNA' | 'ESCALERA'
 
@@ -73,115 +75,106 @@ export default function FormationBuilder() {
 
   return (
     <Modal visible transparent animationType="fade" onRequestClose={() => setShowFormationBuilder(false)}>
-      <View className="flex-1 bg-black/60 items-center justify-center p-4">
-        <View className="bg-green-900 border border-green-600 rounded-xl p-6 max-w-lg w-full max-h-[90%]">
-          <Text className="text-xl font-bold mb-4 text-white">Bajar formaciones</Text>
+      <View className="flex-1 bg-black/70 items-center justify-center p-4">
+        <GlassPanel style={{ width: '100%', maxWidth: 480, maxHeight: '90%', borderRadius: 24 }}>
+          <View className="p-5" style={{ maxHeight: '100%' }}>
+            <Text className="font-display-semibold text-xl text-white mb-4">Bajar formaciones</Text>
 
-          <ScrollView>
-            {poolCartas.length > 0 && (
-              <View className="mb-4">
-                <Text className="text-sm text-green-300 mb-2">
-                  Cartas disponibles{' '}
-                  <Text className="text-xs text-gray-400">(tocá para agregar a la formación actual)</Text>
-                </Text>
-                <View className="flex-row gap-1 flex-wrap">
-                  {poolCartas.map((c) => (
-                    <Card key={c.id} carta={c} small onPress={() => toggleCard(c.id)} />
-                  ))}
+            <ScrollView>
+              {poolCartas.length > 0 && (
+                <View className="mb-4">
+                  <Text className="text-sm text-felt-300 mb-2">
+                    Cartas disponibles{' '}
+                    <Text className="text-xs text-felt-400">(tocá para agregar a la formación actual)</Text>
+                  </Text>
+                  <View className="flex-row gap-1 flex-wrap">
+                    {poolCartas.map((c) => (
+                      <Card key={c.id} carta={c} small onPress={() => toggleCard(c.id)} />
+                    ))}
+                  </View>
                 </View>
-              </View>
-            )}
-
-            <View className="mb-4 border border-green-700 rounded-lg p-3">
-              <Text className="text-sm text-green-300 mb-2 font-semibold">
-                Formación actual{formaciones.length > 0 ? ` (#${formaciones.length + 1})` : ''}:
-              </Text>
-
-              {currentCartas.length > 0 ? (
-                <View className="flex-row gap-1 flex-wrap mb-3">
-                  {currentCartas.map((c) => (
-                    <Card key={c.id} carta={c} small selected onPress={() => toggleCard(c.id)} />
-                  ))}
-                </View>
-              ) : (
-                <Text className="text-xs text-gray-400 mb-3">
-                  {poolIds.length > 0
-                    ? 'Seleccioná cartas de arriba para armar esta formación'
-                    : 'No quedan cartas disponibles'}
-                </Text>
               )}
 
-              <View className="flex-row items-center gap-2 flex-wrap">
-                <View className="flex-row gap-2">
-                  <Pressable
-                    onPress={() => setCurrentTipo('PIERNA')}
-                    className={`px-3 py-1.5 rounded-lg ${currentTipo === 'PIERNA' ? 'bg-blue-600' : 'bg-gray-700'}`}
-                  >
-                    <Text className="font-bold text-xs text-white">Pierna</Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => setCurrentTipo('ESCALERA')}
-                    className={`px-3 py-1.5 rounded-lg ${currentTipo === 'ESCALERA' ? 'bg-blue-600' : 'bg-gray-700'}`}
-                  >
-                    <Text className="font-bold text-xs text-white">Escalera</Text>
-                  </Pressable>
-                </View>
-
-                {poolIds.length > 0 && (
-                  <Pressable
-                    onPress={agregarFormacion}
-                    disabled={!canAgregar}
-                    className={`px-3 py-1.5 bg-yellow-600 rounded-lg ${!canAgregar ? 'opacity-50' : ''}`}
-                  >
-                    <Text className="text-xs font-bold text-white">+ Agregar al listado</Text>
-                  </Pressable>
-                )}
-              </View>
-            </View>
-
-            {formaciones.length > 0 && (
-              <View className="mb-4">
-                <Text className="text-sm text-green-300 mb-2 font-semibold">
-                  Listas para bajar ({formaciones.length}):
+              <View className="mb-4 border border-felt-600 rounded-xl p-3">
+                <Text className="text-sm text-felt-300 mb-2 font-body-semibold">
+                  Formación actual{formaciones.length > 0 ? ` (#${formaciones.length + 1})` : ''}:
                 </Text>
-                <View className="gap-2">
-                  {formaciones.map((f, i) => {
-                    const cartas = misCartas.filter((c) => f.cartaIds.includes(c.id))
-                    return (
-                      <View key={i} className="flex-row items-center gap-2 bg-green-800 rounded-lg p-2">
-                        <Text className="text-xs font-bold text-blue-300">{f.tipo}</Text>
-                        <View className="flex-row gap-1 flex-wrap flex-1">
-                          {cartas.map((c) => (
-                            <Card key={c.id} carta={c} small />
-                          ))}
-                        </View>
-                        <Pressable onPress={() => quitarFormacion(i)} className="px-1">
-                          <Text className="text-xs text-red-400">✕</Text>
-                        </Pressable>
-                      </View>
-                    )
-                  })}
+
+                {currentCartas.length > 0 ? (
+                  <View className="flex-row gap-1 flex-wrap mb-3">
+                    {currentCartas.map((c) => (
+                      <Card key={c.id} carta={c} small selected onPress={() => toggleCard(c.id)} />
+                    ))}
+                  </View>
+                ) : (
+                  <Text className="text-xs text-felt-400 mb-3">
+                    {poolIds.length > 0
+                      ? 'Seleccioná cartas de arriba para armar esta formación'
+                      : 'No quedan cartas disponibles'}
+                  </Text>
+                )}
+
+                <View className="flex-row items-center gap-2 flex-wrap">
+                  <View className="flex-row gap-2">
+                    <Pressable
+                      onPress={() => setCurrentTipo('PIERNA')}
+                      className={`px-3 py-2 rounded-xl ${currentTipo === 'PIERNA' ? 'bg-primary-600' : 'bg-felt-700'}`}
+                    >
+                      <Text className="font-body-bold text-xs text-white">Pierna</Text>
+                    </Pressable>
+                    <Pressable
+                      onPress={() => setCurrentTipo('ESCALERA')}
+                      className={`px-3 py-2 rounded-xl ${currentTipo === 'ESCALERA' ? 'bg-primary-600' : 'bg-felt-700'}`}
+                    >
+                      <Text className="font-body-bold text-xs text-white">Escalera</Text>
+                    </Pressable>
+                  </View>
+
+                  {poolIds.length > 0 && (
+                    <Button onPress={agregarFormacion} disabled={!canAgregar} variant="warning" size="sm">
+                      + Agregar al listado
+                    </Button>
+                  )}
                 </View>
               </View>
-            )}
-          </ScrollView>
 
-          <View className="flex-row gap-2 justify-end mt-2">
-            <Pressable
-              onPress={() => setShowFormationBuilder(false)}
-              className="px-4 py-2 bg-gray-600 rounded-lg"
-            >
-              <Text className="text-sm text-white">Cancelar</Text>
-            </Pressable>
-            <Pressable
-              onPress={confirmar}
-              disabled={!canConfirmar}
-              className={`px-4 py-2 bg-blue-600 rounded-lg ${!canConfirmar ? 'opacity-50' : ''}`}
-            >
-              <Text className="font-bold text-sm text-white">Confirmar ({totalFormaciones})</Text>
-            </Pressable>
+              {formaciones.length > 0 && (
+                <View className="mb-4">
+                  <Text className="text-sm text-felt-300 mb-2 font-body-semibold">
+                    Listas para bajar ({formaciones.length}):
+                  </Text>
+                  <View className="gap-2">
+                    {formaciones.map((f, i) => {
+                      const cartas = misCartas.filter((c) => f.cartaIds.includes(c.id))
+                      return (
+                        <View key={i} className="flex-row items-center gap-2 bg-felt-700/60 rounded-xl p-2">
+                          <Text className="text-xs font-body-bold text-primary-300">{f.tipo}</Text>
+                          <View className="flex-row gap-1 flex-wrap flex-1">
+                            {cartas.map((c) => (
+                              <Card key={c.id} carta={c} small />
+                            ))}
+                          </View>
+                          <Pressable onPress={() => quitarFormacion(i)} className="px-1" hitSlop={8}>
+                            <Text className="text-xs text-danger-400">✕</Text>
+                          </Pressable>
+                        </View>
+                      )
+                    })}
+                  </View>
+                </View>
+              )}
+            </ScrollView>
+
+            <View className="flex-row gap-2 justify-end mt-2">
+              <Button onPress={() => setShowFormationBuilder(false)} variant="neutral" size="sm" bold={false}>
+                Cancelar
+              </Button>
+              <Button onPress={confirmar} disabled={!canConfirmar} variant="primary" size="sm">
+                {`Confirmar (${totalFormaciones})`}
+              </Button>
+            </View>
           </View>
-        </View>
+        </GlassPanel>
       </View>
     </Modal>
   )

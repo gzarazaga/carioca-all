@@ -1,17 +1,30 @@
 {
   "cli": {
-    "version": ">= 21.4.0"
+    "version": ">= 21.4.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://carioca-ux.onrender.com",
+        "EXPO_PUBLIC_WS_URL": "wss://carioca-ux.onrender.com/ws"
+      }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://carioca-ux.onrender.com",
+        "EXPO_PUBLIC_WS_URL": "wss://carioca-ux.onrender.com/ws"
+      }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://carioca-ux.onrender.com",
+        "EXPO_PUBLIC_WS_URL": "wss://carioca-ux.onrender.com/ws"
+      }
     }
   },
   "submit": {

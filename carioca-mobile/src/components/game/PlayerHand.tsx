@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { Text, View } from 'react-native'
 import { useGameStore } from '../../stores/gameStore'
 import CardHand from '../card/CardHand'
 
@@ -11,10 +11,10 @@ export default function PlayerHand() {
 
   return (
     <View className="w-full">
-      <Text className="text-xs text-green-300 text-center mb-1">
+      <Text className="text-[11px] text-felt-300 text-center mb-1.5">
         Tu mano ({misCartas.length} cartas)
         {selectedCardIds.length > 0 && (
-          <Text className="text-blue-300"> {selectedCardIds.length} seleccionada{selectedCardIds.length > 1 ? 's' : ''}</Text>
+          <Text className="text-pink-400 font-body-semibold"> {selectedCardIds.length} seleccionada{selectedCardIds.length > 1 ? 's' : ''}</Text>
         )}
       </Text>
       <CardHand
