@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import Svg, { Defs, Pattern, Line, Rect } from 'react-native-svg'
 import { colors, fonts } from '../../theme'
 import { CARD_SHADOW } from './Card'
 
@@ -23,22 +22,10 @@ export default function CardBack({ small }: Props) {
         end={{ x: 1, y: 1 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
       />
-      <Svg width="100%" height="100%" viewBox="0 0 64 96" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-        <Defs>
-          <Pattern id="weaveA" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <Line x1="5.5" y1="0" x2="5.5" y2="11" stroke={colors.pink[400]} strokeOpacity={0.55} strokeWidth={1.1} />
-          </Pattern>
-          <Pattern id="weaveB" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
-            <Line x1="5.5" y1="0" x2="5.5" y2="11" stroke={colors.success[600]} strokeOpacity={0.4} strokeWidth={1.1} />
-          </Pattern>
-        </Defs>
-        <Rect width="64" height="96" fill="url(#weaveA)" />
-        <Rect width="64" height="96" fill="url(#weaveB)" />
-      </Svg>
       <View
         pointerEvents="none"
         className="absolute rounded-lg border"
-        style={{ top: 6, left: 6, right: 6, bottom: 6, borderColor: 'rgba(237,180,23,0.4)' }}
+        style={{ top: 6, left: 6, right: 6, bottom: 6, borderColor: 'rgba(237,180,23,0.35)' }}
       />
       <Text
         style={{
